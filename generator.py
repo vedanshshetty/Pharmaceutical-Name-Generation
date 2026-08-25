@@ -480,10 +480,13 @@ def strategy_llm_baseline(target_class: Optional[str], target_type: TargetType,
                 "`pip install openai`."
             ) from e
         
+        import os
+        key_to_use = api_key or os.environ.get("OPENROUTER_API_KEY") or os.environ.get("OPENAI_API_KEY")
+        
         # We default to OpenRouter base URL
         client = OpenAI(
             base_url="https://openrouter.ai/api/v1",
-            api_key=api_key
+            api_key=key_to_use
         )
 
     if target_type == TargetType.GENERIC:
