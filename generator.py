@@ -1000,3 +1000,62 @@ def export_generation_report(results: Sequence[GenerationResult], path_prefix: s
             if r.accepted:
                 w.writerow(r.to_row())
     return accepted_path, full_path
+
+
+if __name__ == "__main__":
+    import argparse
+    try:
+        import data_layer
+    except ImportError:
+        print("Error: data_layer.py not found.")
+        exit(1)
+        
+    parser = argparse.ArgumentParser(description="Run NOMINA Generator")
+    parser.add_argument("--type", type=str, choices=["generic", "brand"], default="generic")
+    parser.add_argument("--class-keyword", type=str, default="beta-blocker")
+    parser.add_argument("--stem", type=str, default="-olol")
+    parser.add_argument("--strategy", type=str, default="rejection_sampling",
+                        choices=["llm_baseline", "rejection_sampling", "constrained_decoding", "rl_refined"])
+    parser.add_argument("--n-accepted", type=int, default=5)
+    parser.add_argument("--mock-verifier", action="store_true", help="Use MockVerifier instead of real Verifier")
+    args = parser.parse_args()
+
+    print(f"Loading data layer...")
+    gen = Generator.from_data_layer(data_layer)
+    
+    if args.mock_verifier:
+        from contracts import MockVerifier
+        verifier = MockVerifier()
+        print("Using MockVerifier.")
+    else:
+        try:
+            from verifier import Verifier
+            verifier = Verifier.from_data_layer(data_layer)
+            print("Using real Verifier.")
+        except ImportError:
+            print("WARNING: verifier.py not found. Falling back to MockVerifier.")
+            print("(Ensure you have merged the Verifier branch to get verifier.py and contracts.py)")
+            from contracts import MockVerifier
+            verifier = MockVerifier()
+
+    print(f"Running generation: target={args.type}, class={args.class_keyword}, stem={args.stem}, strategy={args.strategy}")
+    results, stats = gen.generate_and_refine(
+        verifier=verifier,
+        n_accepted=args.n_accepted,
+        target_type=args.type,
+        target_class=args.class_keyword,
+        target_stem=args.stem,
+        strategy=args.strategy
+    )
+    
+    print("\n=== Generation Stats ===")
+    for k, v in stats.items():
+        print(f"{k}: {v}")
+        
+    print("\n=== Accepted Candidates ===")
+    for r in results:
+        if r.accepted:
+            print(f"- {r.candidate_name} (Rounds: {r.rounds}, Lineage: {' -> '.join(r.lineage)})")
+            
+    accepted_csv, all_csv = export_generation_report(results)
+    print(f"\nSaved reports to {accepted_csv} and {all_csv}")
