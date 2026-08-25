@@ -90,7 +90,7 @@ class GeneratorConfig:
     max_candidates_per_accept: int = 250  # safety valve: total raw draws per accepted name
 
     # LLM strategy
-    llm_model: str = "claude-sonnet-5"
+    llm_model: str = "google/gemini-pro"
     llm_batch_size: int = 10
     llm_avoid_list_size: int = 12
 
@@ -473,14 +473,18 @@ def strategy_llm_baseline(target_class: Optional[str], target_type: TargetType,
     """
     if client is None:
         try:
-            import anthropic
+            from openai import OpenAI
         except ImportError as e:
             raise RuntimeError(
-                "llm_baseline requires the 'anthropic' package. Install it with "
-                "`pip install anthropic` (or `--break-system-packages` in this "
-                "environment), or use a different generation_strategy."
+                "llm_baseline requires the 'openai' package for OpenRouter. Install it with "
+                "`pip install openai`."
             ) from e
-        client = anthropic.Anthropic(api_key=api_key) if api_key else anthropic.Anthropic()
+        
+        # We default to OpenRouter base URL
+        client = OpenAI(
+            base_url="https://openrouter.ai/api/v1",
+            api_key=api_key
+        )
 
     if target_type == TargetType.GENERIC:
         stem = (target_stem or "").lstrip("-")
@@ -515,12 +519,11 @@ def strategy_llm_baseline(target_class: Optional[str], target_type: TargetType,
         f"- no numbering, bullets, or commentary -- just the {n} names, one per line\n"
     )
 
-    resp = client.messages.create(
+    resp = client.chat.completions.create(
         model=config.llm_model,
-        max_tokens=60 * max(1, n),
         messages=[{"role": "user", "content": prompt}],
     )
-    text = "".join(b.text for b in resp.content if getattr(b, "type", "") == "text")
+    text = resp.choices[0].message.content
     names = []
     for line in text.splitlines():
         cand = normalise(line)
