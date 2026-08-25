@@ -1,5 +1,5 @@
 """
-NOMINA â€” Interface contract between the Generator (Person A) and the Verifier (Person B).
+NOMINA — Interface contract between the Generator (Person A) and the Verifier (Person B).
 
 This module is the *frozen schema* both halves of the project build against. It is
 deliberately dependency-light (pydantic v2 only) so either side can import it without
@@ -61,17 +61,17 @@ class FailureCode(str, Enum):
     The generator is expected to branch on these. Adding a member is a contract
     change and requires agreement from both sides.
     """
-    # V0 â€” input sanity
+    # V0 — input sanity
     MALFORMED_CANDIDATE = "MALFORMED_CANDIDATE"
     LENGTH_OUT_OF_RANGE = "LENGTH_OUT_OF_RANGE"
     NON_ALPHABETIC = "NON_ALPHABETIC"
 
-    # V1 â€” similarity to existing marketed names
+    # V1 — similarity to existing marketed names
     SIMILARITY_TOO_HIGH = "SIMILARITY_TOO_HIGH"          # composite >= high cutoff
     SIMILARITY_MODERATE = "SIMILARITY_MODERATE"          # composite in the grey band
     EXACT_NAME_COLLISION = "EXACT_NAME_COLLISION"        # candidate already exists
 
-    # V2 â€” USAN/INN stem rules
+    # V2 — USAN/INN stem rules
     STEM_MISSING = "STEM_MISSING"                        # generic name lacks required stem
     STEM_MISMATCH = "STEM_MISMATCH"                      # carries a *different* class's stem
     STEM_MISUSE_IN_BRAND = "STEM_MISUSE_IN_BRAND"        # brand name ends in a real stem
@@ -79,15 +79,15 @@ class FailureCode(str, Enum):
     STEM_PREFIX_TOO_SHORT = "STEM_PREFIX_TOO_SHORT"      # nothing distinctive before the stem
     INTRA_STEM_TOO_CLOSE = "INTRA_STEM_TOO_CLOSE"        # too close to a same-stem sibling
 
-    # V3 â€” trademark
+    # V3 — trademark
     TRADEMARK_HIT = "TRADEMARK_HIT"
 
-    # V4 â€” pronounceability
+    # V4 — pronounceability
     UNPRONOUNCEABLE = "UNPRONOUNCEABLE"
     ILLEGAL_ONSET_CLUSTER = "ILLEGAL_ONSET_CLUSTER"
     NO_VOWEL_NUCLEUS = "NO_VOWEL_NUCLEUS"
 
-    # V5 â€” cross-lingual / promotional
+    # V5 — cross-lingual / promotional
     CROSSLINGUAL_ADVERSE_MEANING = "CROSSLINGUAL_ADVERSE_MEANING"
     IMPLIED_CLAIM = "IMPLIED_CLAIM"
 
@@ -245,7 +245,7 @@ class VerifierBatchResponse(BaseModel):
 
 
 # ---------------------------------------------------------------------------
-# Mock verifier â€” for Person A to develop against before the real one lands
+# Mock verifier — for Person A to develop against before the real one lands
 # ---------------------------------------------------------------------------
 
 class MockVerifier:
