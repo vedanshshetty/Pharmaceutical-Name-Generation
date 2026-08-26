@@ -1,0 +1,278 @@
+stem,meaning,position,scheme
+-olol,beta-blocker (beta-adrenoceptor antagonist),suffix,INN
+-alol,beta-blocker with vasodilator activity,suffix,INN
+-pril,ACE inhibitor,suffix,INN
+-prilat,ACE inhibitor active metabolite (diacid),suffix,INN
+-sartan,angiotensin II receptor antagonist,suffix,INN
+-tensin,angiotensin-related,infix,INN
+-statin,HMG-CoA reductase inhibitor (cholesterol-lowering),suffix,INN
+-vastatin,HMG-CoA reductase inhibitor (synthetic subgroup),suffix,INN
+-dipine,calcium channel blocker (dihydropyridine),suffix,INN
+-fradil,calcium channel blocker (T-type),suffix,INN
+-mab,monoclonal antibody,suffix,INN
+-ximab,chimeric monoclonal antibody,suffix,INN
+-zumab,humanized monoclonal antibody,suffix,INN
+-umab,human monoclonal antibody,suffix,INN
+-omab,murine monoclonal antibody,suffix,INN
+-amab,monoclonal antibody from other or mixed species,suffix,INN
+-tug,unmodified immunoglobulin (post-2021 antibody scheme),suffix,INN
+-bart,artificial antibody (post-2021 antibody scheme),suffix,INN
+-mig,bispecific or multispecific antibody (post-2021 scheme),suffix,INN
+-ment,antibody fragment (post-2021 antibody scheme),suffix,INN
+-tinib,tyrosine kinase inhibitor,suffix,INN
+-nib,small molecule kinase inhibitor (broad class),suffix,INN
+-ciclib,cyclin-dependent kinase inhibitor,suffix,INN
+-lisib,phosphatidylinositol 3-kinase inhibitor,suffix,INN
+-rafenib,BRAF kinase inhibitor,suffix,INN
+-metinib,MEK kinase inhibitor,suffix,INN
+-zomib,proteasome inhibitor,suffix,INN
+-parib,PARP inhibitor,suffix,INN
+-degib,hedgehog pathway (smoothened) inhibitor,suffix,INN
+-tasvir,hepatitis C NS5A inhibitor,suffix,INN
+-buvir,hepatitis C NS5B polymerase inhibitor,suffix,INN
+-previr,hepatitis C NS3/4A protease inhibitor,suffix,INN
+-azepam,benzodiazepine (anxiolytic or sedative),suffix,INN
+-azolam,benzodiazepine (triazolo subgroup),suffix,INN
+-zolam,benzodiazepine,suffix,INN
+-barb,barbiturate,suffix,INN
+-barbital,barbituric acid derivative,suffix,INN
+-caine,local anaesthetic,suffix,INN
+-cillin,penicillin-class antibiotic,suffix,INN
+-cycline,tetracycline-class antibiotic,suffix,INN
+-floxacin,fluoroquinolone antibacterial,suffix,INN
+-oxacin,quinolone antibacterial (older generation),suffix,INN
+-mycin,antibacterial from Streptomyces,suffix,INN
+-micin,antibacterial from Micromonospora,suffix,INN
+-thromycin,macrolide antibacterial (erythromycin group),suffix,INN
+-cef-,cephalosporin antibacterial,prefix,INN
+ceph-,cephalosporin antibacterial (older orthography),prefix,INN
+-penem,carbapenem antibacterial,suffix,INN
+-bactam,beta-lactamase inhibitor,suffix,INN
+-monam,monobactam antibacterial,suffix,INN
+-conazole,systemic antifungal (triazole or imidazole),suffix,INN
+-afungin,echinocandin antifungal,suffix,INN
+-fungin,antifungal antibiotic,suffix,INN
+-vir,antiviral,suffix,INN
+-navir,HIV protease inhibitor,suffix,INN
+-ciclovir,antiviral (guanine derivative),suffix,INN
+-cyclovir,antiviral (guanine derivative),suffix,INN
+-tegravir,HIV integrase strand transfer inhibitor,suffix,INN
+-vudine,nucleoside reverse transcriptase inhibitor (zidovudine type),suffix,INN
+-amivir,neuraminidase inhibitor,suffix,INN
+-parin,heparin derivative or low molecular weight heparin,suffix,INN
+-parinux,synthetic heparinoid pentasaccharide,suffix,INN
+-xaban,direct factor Xa inhibitor,suffix,INN
+-gatran,direct thrombin inhibitor,suffix,INN
+-plase,tissue plasminogen activator,suffix,INN
+-teplase,tissue plasminogen activator (modified),suffix,INN
+-triptan,5-HT1 receptor agonist (antimigraine),suffix,INN
+-setron,5-HT3 receptor antagonist (antiemetic),suffix,INN
+-pitant,neurokinin NK1 receptor antagonist,suffix,INN
+-olone,corticosteroid (prednisolone group),suffix,INN
+-asone,corticosteroid (prednisone group),suffix,INN
+-onide,corticosteroid (acetal derivative),suffix,INN
+-cort,corticosteroid,infix,INN
+-pred,prednisone or prednisolone derivative,infix,INN
+-prazole,proton pump inhibitor (benzimidazole),suffix,INN
+-tidine,histamine H2 receptor antagonist,suffix,INN
+-astine,histamine H1 receptor antagonist,suffix,INN
+-listine,histamine H1 receptor antagonist,suffix,INN
+-glitazone,thiazolidinedione antidiabetic,suffix,INN
+-gliflozin,SGLT2 inhibitor antidiabetic,suffix,INN
+-gliptin,DPP-4 inhibitor antidiabetic,suffix,INN
+-glinide,meglitinide antidiabetic,suffix,INN
+-glutide,GLP-1 receptor agonist (acylated),suffix,INN
+-tide,peptide,suffix,INN
+-relix,gonadotropin releasing hormone antagonist,suffix,INN
+-relin,pituitary hormone release stimulating peptide,suffix,INN
+-actide,corticotropin analogue,suffix,INN
+-pressin,vasopressin derivative,suffix,INN
+-cin,antibiotic or general anti-infective,suffix,USAN
+-feron,interferon,suffix,INN
+-leukin,interleukin,suffix,INN
+-kin,interleukin type substance,suffix,INN
+-cept,receptor Fc fusion protein,suffix,INN
+-cel,cell therapy product,suffix,INN
+-gene,gene therapy product,suffix,INN
+-vec,viral vector gene therapy,suffix,INN
+-repvec,replicating viral vector,suffix,INN
+-ase,enzyme,suffix,INN
+-dismase,superoxide dismutase,suffix,INN
+-lipase,lipase enzyme,suffix,INN
+-poetin,erythropoietin type blood factor,suffix,INN
+-stim,colony stimulating factor,suffix,INN
+-grastim,granulocyte colony stimulating factor,suffix,INN
+-gramostim,granulocyte macrophage colony stimulating factor,suffix,INN
+-cogin,blood coagulation factor,suffix,INN
+-eptacog,blood coagulation factor VII,suffix,INN
+-octocog,blood coagulation factor VIII,suffix,INN
+-nonacog,blood coagulation factor IX,suffix,INN
+-sen,antisense oligonucleotide,suffix,INN
+-rsen,antisense oligonucleotide (exon skipping),suffix,INN
+-siran,small interfering RNA,suffix,INN
+-mer,oligonucleotide (aptamer or similar),suffix,INN
+-aptamer,nucleic acid aptamer,suffix,INN
+-vaxin,vaccine,suffix,INN
+-ximod,immunomodulator,suffix,INN
+-imod,immunomodulator,suffix,INN
+-mus,immunosuppressant (macrolide),suffix,INN
+-limus,immunosuppressant (sirolimus group),suffix,INN
+-sone,corticosteroid or steroid,suffix,USAN
+-terone,antiandrogen,suffix,INN
+-tostatin,somatostatin analogue,suffix,INN
+-estr-,estrogen,infix,INN
+-andr-,androgen,infix,INN
+-gest-,progestogen,infix,INN
+-gestrel,progestogen (norgestrel group),suffix,INN
+-metacin,anti-inflammatory (indometacin group),suffix,INN
+-profen,non-steroidal anti-inflammatory (ibuprofen group),suffix,INN
+-coxib,selective COX-2 inhibitor,suffix,INN
+-icam,anti-inflammatory (piroxicam group),suffix,INN
+-salan,anti-inflammatory salicylic acid derivative,suffix,INN
+-adol,analgesic (mixed mechanism),suffix,INN
+-adoxen,analgesic (mixed mechanism),suffix,INN
+-eridine,pethidine group analgesic,suffix,INN
+-fentanil,fentanyl group opioid analgesic,suffix,INN
+-morphan,morphinan opioid,suffix,INN
+-orphan,morphinan opioid antagonist or agonist,suffix,INN
+-azocine,opioid (benzomorphan group),suffix,INN
+-nalmefene,opioid antagonist,suffix,USAN
+-bamate,carbamate tranquilizer or muscle relaxant,suffix,INN
+-curium,neuromuscular blocking agent (curare type),suffix,INN
+-curonium,neuromuscular blocking agent (steroid type),suffix,INN
+-perone,tranquilizer (butyrophenone),suffix,INN
+-peridol,antipsychotic (haloperidol group),suffix,INN
+-peridone,antipsychotic (risperidone group),suffix,INN
+-apine,tricyclic or tetracyclic psychoactive compound,suffix,INN
+-piprazole,antipsychotic (aripiprazole group),suffix,INN
+-triptyline,antidepressant (dibenzo tricyclic),suffix,INN
+-tramine,antidepressant or appetite suppressant,suffix,INN
+-oxetine,antidepressant (fluoxetine group),suffix,INN
+-faxine,antidepressant (venlafaxine group),suffix,INN
+-azosin,alpha-1 adrenoceptor antagonist,suffix,INN
+-zosin,alpha-1 adrenoceptor antagonist,suffix,INN
+-terol,beta-2 adrenoceptor agonist (bronchodilator),suffix,INN
+-buterol,beta-2 adrenoceptor agonist,suffix,INN
+-frine,sympathomimetic (phenethylamine),suffix,INN
+-drine,sympathomimetic,suffix,INN
+-tropium,quaternary anticholinergic bronchodilator,suffix,INN
+-trop-,atropine derivative,infix,INN
+-stigmine,cholinesterase inhibitor,suffix,INN
+-onium,quaternary ammonium compound,suffix,INN
+-ergoline,ergot alkaloid derivative,suffix,INN
+-ergide,ergot alkaloid derivative,suffix,INN
+-dopa,dopamine precursor,suffix,INN
+-triptyl,tricyclic,infix,USAN
+-fylline,theophylline derivative (xanthine),suffix,INN
+-phylline,theophylline derivative (xanthine),suffix,INN
+-milast,phosphodiesterase-4 inhibitor,suffix,INN
+-afil,phosphodiesterase-5 inhibitor,suffix,INN
+-lukast,leukotriene receptor antagonist,suffix,INN
+-leuton,5-lipoxygenase inhibitor,suffix,INN
+-thiazide,diuretic (thiazide),suffix,INN
+-semide,diuretic (furosemide group),suffix,INN
+-anide,loop diuretic,suffix,INN
+-tanide,loop diuretic (sulfamoylbenzoic acid),suffix,INN
+-vaptan,vasopressin receptor antagonist,suffix,INN
+-uril,diuretic (chlorothiazide group),suffix,INN
+-actone,steroidal aldosterone antagonist,suffix,INN
+-fibrate,clofibrate type lipid lowering agent,suffix,INN
+-fibrozil,lipid lowering agent (gemfibrozil group),suffix,INN
+-cetrapib,cholesteryl ester transfer protein inhibitor,suffix,INN
+-tapide,microsomal triglyceride transfer protein inhibitor,suffix,INN
+-zamide,benzamide derivative,suffix,INN
+-sulfa-,antimicrobial sulfonamide,prefix,INN
+-arabine,arabinofuranosyl antineoplastic,suffix,INN
+-citabine,nucleoside antineoplastic or antiviral,suffix,INN
+-tabine,nucleoside analogue,suffix,INN
+-rubicin,anthracycline antineoplastic antibiotic,suffix,INN
+-platin,platinum-containing antineoplastic,suffix,INN
+-taxel,taxane antineoplastic,suffix,INN
+-tecan,topoisomerase I inhibitor (camptothecin group),suffix,INN
+-trexed,thymidylate synthase inhibitor,suffix,INN
+-trexate,folic acid antagonist,suffix,INN
+-mustine,alkylating antineoplastic (nitrogen mustard),suffix,INN
+-imus,immunosuppressive antineoplastic,suffix,USAN
+-ludex,antineoplastic conjugate,suffix,USAN
+-tansine,maytansinoid antibody drug conjugate payload,suffix,INN
+-vedotin,auristatin antibody drug conjugate payload,suffix,INN
+-deruxtecan,topoisomerase I inhibitor payload conjugate,suffix,INN
+-ribine,ribofuranosyl antineoplastic,suffix,INN
+-farnib,farnesyltransferase inhibitor,suffix,INN
+-stat,enzyme inhibitor (general),suffix,INN
+-restat,aldose reductase inhibitor,suffix,INN
+-mostat,protease inhibitor,suffix,INN
+-listat,lipase inhibitor,suffix,INN
+-sedostat,general enzyme inhibitor,suffix,USAN
+-vastin,angiogenesis inhibitor antibody stem component,infix,USAN
+-lutamide,nonsteroidal antiandrogen,suffix,INN
+-tinide,antidiabetic,suffix,USAN
+-azolid,anti-inflammatory (phenylbutazone group),suffix,INN
+-butazone,anti-inflammatory (phenylbutazone group),suffix,INN
+-nidazole,antiprotozoal (metronidazole group),suffix,INN
+-quine,antimalarial (quinoline derivative),suffix,INN
+-mefloquine,antimalarial,suffix,USAN
+-artemisinin,antimalarial (artemisinin group),suffix,USAN
+-arte-,artemisinin antimalarial,prefix,INN
+-praz-,antiulcer proton pump related,infix,USAN
+-bendazole,anthelmintic (benzimidazole),suffix,INN
+-antel,anthelmintic (pyrantel group),suffix,INN
+-quantel,anthelmintic (praziquantel group),suffix,INN
+-ectin,antiparasitic (avermectin group),suffix,INN
+-mectin,antiparasitic (avermectin group),suffix,INN
+-vaquone,antiprotozoal (naphthoquinone),suffix,USAN
+-fenacin,muscarinic receptor antagonist,suffix,INN
+-fenacine,muscarinic receptor antagonist,suffix,INN
+-terodine,muscarinic receptor antagonist (urinary),suffix,INN
+-dronic,bisphosphonate calcium metabolism regulator,suffix,INN
+-dronate,bisphosphonate calcium metabolism regulator,suffix,INN
+-calcet,calcium sensing receptor modulator,suffix,INN
+-calci-,vitamin D derivative,infix,INN
+-calcidol,vitamin D analogue,suffix,INN
+-retin,retinol derivative,infix,INN
+-tretin,retinoid,suffix,INN
+-arotene,retinoid (arotinoid group),suffix,INN
+-exine,mucolytic (bromhexine group),suffix,INN
+-cisteine,mucolytic (cysteine derivative),suffix,INN
+-butine,intestinal motility modifier,suffix,INN
+-pride,sulpiride derivative (dopamine antagonist),suffix,INN
+-prazine,phenothiazine derivative,suffix,INN
+-promazine,phenothiazine neuroleptic,suffix,INN
+-perazine,phenothiazine derivative,suffix,INN
+-thixene,thioxanthene neuroleptic,suffix,INN
+-racetam,nootropic (piracetam group),suffix,INN
+-ampanel,AMPA receptor antagonist,suffix,INN
+-gabine,GABA reuptake or metabolism modifier,suffix,INN
+-vatricept,receptor fusion protein,suffix,USAN
+-bulin,tubulin binding agent,suffix,USAN
+-tocin,oxytocin derivative,suffix,INN
+-sulfan,alkylating antineoplastic (methanesulfonate),suffix,INN
+-tiazem,calcium channel blocker (benzothiazepine),suffix,INN
+-dilol,beta-blocker with vasodilator activity,suffix,INN
+-ilide,class III antiarrhythmic,suffix,INN
+-cainide,class I antiarrhythmic,suffix,INN
+-cromil,antiallergic (cromoglicic acid group),suffix,INN
+-crom,antiallergic (cromoglicic acid group),suffix,INN
+-orex,anorectic agent,suffix,INN
+-orexant,orexin receptor antagonist,suffix,INN
+-melteon,melatonin receptor agonist,suffix,USAN
+-clone,hypnotic (cyclopyrrolone),suffix,INN
+-plon,hypnotic (pyrazolopyrimidine),suffix,INN
+-spirone,anxiolytic (buspirone group),suffix,INN
+-serod,serotonin receptor modulator,suffix,INN
+-serin,serotonin receptor antagonist,suffix,INN
+-anserin,serotonin 5-HT2 receptor antagonist,suffix,INN
+-brutinib,Bruton tyrosine kinase inhibitor,suffix,USAN
+-citinib,Janus kinase inhibitor,suffix,INN
+-sertib,serine threonine kinase inhibitor,suffix,INN
+-ertapide,appetite or lipid modifier,suffix,USAN
+-emcinal,motilin receptor agonist,suffix,USAN
+-bersat,anticonvulsant,suffix,USAN
+-gepant,calcitonin gene-related peptide receptor antagonist,suffix,INN
+-ditan,5-HT1F receptor agonist,suffix,INN
+-cabtagene,chimeric antigen receptor T cell therapy,infix,INN
+-eucel,autologous cell therapy,suffix,INN
+-demcel,allogeneic cell therapy,suffix,INN
+-temcel,mesenchymal stromal cell therapy,suffix,INN
+-ademnel,dendritic cell therapy,suffix,INN
+-torvastatin,statin subgroup,suffix,USAN
