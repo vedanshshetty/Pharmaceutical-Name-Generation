@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.nomina_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+.venv/
+venv/
+.DS_Store
+results/*.csv
+!results/.gitkeep
+# Artifacts are published deliberately via ArtifactStore.publish(), never automatically.
+artifacts/*.json.gz
+!artifacts/.gitkeep
