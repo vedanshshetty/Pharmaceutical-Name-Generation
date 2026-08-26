@@ -1,6 +1,6 @@
 {
   "data_layer_version": "2.0.0",
-  "built_at": "2026-08-26T14:36:48.269366+00:00",
+  "built_at": "2026-08-26T15:53:16.104842+00:00",
   "mode": "live",
   "fingerprint": "d9cc79de5be14f36",
   "name_rows": 31848,
@@ -12,7 +12,7 @@
       "name": "committed-snapshot",
       "endpoint": "local:C:\\Users\\AviralSharma\\Desktop\\Desktop\\College stuff\\LY\\Semester 7\\Gen AI\\IAs\\IA1\\Pharmaceutical-Name-Generation\\data\\existing_drug_names.csv",
       "mode": "static",
-      "rows": 2168,
+      "rows": 31848,
       "fetched_at": null,
       "note": "baseline corpus committed to the repository"
     },
@@ -20,17 +20,17 @@
       "name": "openFDA:ndc",
       "endpoint": "https://api.fda.gov/drug/ndc.json",
       "mode": "live",
-      "rows": 25000,
-      "fetched_at": "2026-08-26T14:36:32.314195+00:00",
-      "note": "101.6s"
+      "rows": 20000,
+      "fetched_at": "2026-08-26T15:53:08.676586+00:00",
+      "note": "58.2s"
     },
     {
       "name": "RxNorm:IN+BN",
       "endpoint": "https://rxnav.nlm.nih.gov/REST/allconcepts.json?tty=IN+BN",
       "mode": "live",
       "rows": 19786,
-      "fetched_at": "2026-08-26T14:36:47.170004+00:00",
-      "note": "14.9s"
+      "fetched_at": "2026-08-26T15:53:15.030358+00:00",
+      "note": "6.4s"
     },
     {
       "name": "EMA:medicines",
@@ -50,5 +50,5 @@
     }
   ],
   "fetched_by": "scripts/fetch_reference_data.py",
-  "fetched_at": "2026-08-26T14:36:48.544972+00:00"
+  "fetched_at": "2026-08-26T15:53:16.354796+00:00"
 }
