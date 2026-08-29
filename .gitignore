@@ -7,6 +7,10 @@ __pycache__/
 .coverage
 htmlcov/
 *.egg-info/
+# Tectonic LaTeX build intermediates
+paper/*.aux
+paper/*.out
+paper/*.log
 .venv/
 venv/
 .DS_Store
