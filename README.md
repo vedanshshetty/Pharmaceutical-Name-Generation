@@ -13,6 +13,18 @@ every result recording the corpus fingerprint, the data mode, and the git SHA. T
 no metered proposer and nothing in a run depends on a remote service, an API key, or a
 rate limit.
 
+**The idea in one paragraph.** Generate many, discard nothing unseen, screen everything, then
+rank the survivors. Every request runs two proposers in parallel — a syllable grammar induced
+from the corpus, and an order-3 n-gram model that each rejected candidate re-guides — and pools
+their output. The verifier then applies five separate regulatory checks to *every* member of the
+pool (INN/USAN stem conformance, orthographic and phonetic look-alike screening against the
+assembled regulator corpus, trademark collision, phonotactic well-formedness, adverse
+cross-lingual meaning) and admits a name only if it clears all five. Quality is a separate,
+downstream objective with distinct generic and brand most-similarity profiles; it ranks what
+survived and never rescues a rejection. Because verification and ranking are separated, the
+regulatory claim is testable on its own, and the results below — discrimination, per-class
+acceptance, proposer contribution — are its evidence.
+
 ---
 
 ## Quickstart
@@ -156,11 +168,8 @@ preference into the regulatory decision would make the regulatory claim indefens
 
 ## Results
 
-Results for the current version are produced by the sweep harness and evaluation suite and
-reported in `paper/` — the manuscript, the raw attempt-level CSVs, and the scripts that
-reproduce every number from them. Summary tables for the sixteen-default-target sweep
-(roomy/crowded/saturated generic classes plus brand mode) and the verifier discrimination,
-ablation and architecture-comparison numbers live there.
+Every number is regenerable in one command (`python paper/reproduce.py`, or per-seed
+then `--aggregate` for the sweep) and lands in `paper/results/` beside the manuscript.
 
 **Verifier discrimination** against FDA/ISMP documented confusable pairs:
 
@@ -170,6 +179,61 @@ ablation and architecture-comparison numbers live there.
 | Mean score, confusable pairs | 64.0 |
 | Mean score, random pairs | 24.0 |
 | Separation | 39.9 |
+
+**Brand vs generic across seeds {1,2,3}** — 20 default targets, 10 shortlist each, per
+run. Brand marks are out of the stem regime entirely, which is the point of having two
+pipelines: brand acceptance is more than double generic, generic best-quality is higher
+(stem conformance pays for distinctiveness in a way brand never does).
+
+| Mode | Accept rate (mean±std) | Mean quality | Best quality |
+|---|---|---|---|
+| Generic | 0.241 ± 0.003 | 62.3 ± 0.2 | 75.4 ± 0.2 |
+| Brand | 0.501 ± 0.051 | 60.7 ± 0.4 | 68.2 ± 1.0 |
+
+**Acceptance by class difficulty** (merged three seeds) — the stratification predicts,
+which is why it is reported rather than assumed:
+
+| Difficulty | Candidates | Accept rate | Mean quality |
+|---|---|---|---|
+| brand | 1152 | 50.0% | 60.7 |
+| roomy (`-pril`, `-sartan`, `-vaptan`, `-dipine`) | 1356 | 30.8% | 63.7 |
+| crowded (`-olol`, `-prazole`, `-caine`, `-statin`, `-cycline`) | 2972 | 22.5% | 62.4 |
+| saturated (`-tinib`, `-mab`, `-gliptin`, `-gliflozin`, `-parib`) | 2601 | 22.5% | 61.5 |
+
+**Proposer contribution** — the comparison v1's `compare_strategies` was reaching for,
+now conducted over logged pool data rather than forced on the user as a mode switch.
+The two proposers have near-identical accept rates but very different shortlist shares
+(grammar 69%, guided n-gram 31%), and the n-gram produces the highest-quality candidate.
+That split is the empirical case for pooling instead of picking one.
+
+**Two findings worth reporting as results, not footnotes:**
+
+1. At the configured reject cutoff of 70, specificity against random pairs is already
+   1.00 while sensitivity to documented confusable pairs is much lower than at the 55
+   review line. The 55-70 band is doing real safety work, which is the direct
+   justification for reporting it explicitly rather than passing it silently.
+
+2. In stem-governed classes, almost every plausible novel name lands in the review band,
+   because the mandated stem itself forces high orthographic similarity to siblings. This
+   is a property of the problem rather than a defect of the screen; stem-aware similarity
+   scoring is how it is handled.
+
+---
+
+## Paper
+
+`paper/manuscript.pdf` is the full paper — IEEE conference format, nine pages, no external
+services: **"Generative–Verifier Architecture for Regulation-Compliant Pharmaceutical Name
+Generation."** It states the five checks, the two opposed pipelines, and the three-seed evidence
+of Section V: discrimination, per-class acceptance, the proposer-contribution split, and the
+quality-component ablation. Everything the paper reports is regenerable from committed artifacts:
+
+```bash
+python paper/reproduce.py             # full pipeline; or `python paper/reproduce.py SEED` per seed
+python paper/reproduce.py --aggregate
+python paper/make_figures.py          # paper/figures/fig_corpus.png, fig_strata.png
+cd paper && tectonic manuscript.tex   # rebuild manuscript.pdf
+```
 
 ---
 
