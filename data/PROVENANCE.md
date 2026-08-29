@@ -2,7 +2,7 @@
 
 A screening result is only as defensible as the universe it was screened against. This
 file records where every corpus came from, how it is filtered, and what its known limits
-are. Any figure quoted from a NOMINA run should be readable alongside this document.
+are. Any figure quoted from a run of this system should be readable alongside this document.
 
 ## Sources
 
@@ -56,7 +56,7 @@ comma-separated (`acetaminophen, dextromethorphan hydrobromide, guaifenesin`) an
 stay in the corpus, so the test requires **both** a long ingredient list **and** at least
 two recognised homeopathic Latin terms in it.
 
-Filtering is verified in both directions. `tests/test_nomina.py` asserts that the junk
+Filtering is verified in both directions. `tests/test_pharma_name_gen.py` asserts that the junk
 tokens are gone **and** that `metoprolol`, `tylenol`, `advil` and `ibuprofen` survive —
 a filter aggressive enough to delete what you screen against is worse than no filter.
 

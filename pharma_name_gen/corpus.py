@@ -1,5 +1,5 @@
 """
-NOMINA corpus construction.
+Corpus construction.
 
 One snapshot, two derived corpora, one place that documents the difference.
 

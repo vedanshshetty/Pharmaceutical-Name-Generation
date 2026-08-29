@@ -1,5 +1,5 @@
 """
-NOMINA evaluation — the numbers that go in the paper.
+Evaluation — the numbers that go in the paper.
 
 Three families of experiment, each answering a question a reviewer will ask:
 

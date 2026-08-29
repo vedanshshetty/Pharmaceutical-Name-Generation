@@ -1,5 +1,5 @@
 """
-NOMINA orchestrator — parallel pool-and-select generation.
+Orchestrator — parallel pool-and-select generation.
 
 The architecture this replaces
 ------------------------------

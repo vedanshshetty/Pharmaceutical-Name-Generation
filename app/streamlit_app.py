@@ -1,5 +1,5 @@
 """
-NOMINA — Streamlit interface.
+Streamlit interface for the generative-verifier pharmaceutical name system.
 
 Run with:  streamlit run app/streamlit_app.py
 
@@ -20,11 +20,12 @@ import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from nomina import PipelineConfig, build_system                      # noqa: E402
-from nomina import introspect as ins                                  # noqa: E402
-from nomina.verifier import VerifierConfig                            # noqa: E402
+from pharma_name_gen import PipelineConfig, build_system                      # noqa: E402
+from pharma_name_gen import introspect as ins                                  # noqa: E402
+from pharma_name_gen.verifier import VerifierConfig                            # noqa: E402
 
-st.set_page_config(page_title="NOMINA", page_icon="⚗", layout="wide")
+st.set_page_config(page_title="Pharmaceutical Name Generation",
+                   page_icon="⚗", layout="wide")
 
 BAND_COLOUR = {"low": "#1a7f4b", "moderate": "#b06e00", "high": "#a11"}
 
@@ -41,7 +42,7 @@ st.markdown("""
   .muted {color:#7a8792;font-size:.86em}
 </style>
 <div class="hero">
-  <h1>NOMINA</h1>
+  <h1>Pharmaceutical Name Generation</h1>
   <p>Regulation-aware generation and screening of pharmaceutical names</p>
 </div>
 """, unsafe_allow_html=True)
@@ -162,12 +163,12 @@ with tab_gen:
         d1, d2 = st.columns(2)
         d1.download_button("Download all attempts (CSV)",
                            report.to_frame().to_csv(index=False),
-                           f"nomina_{stamp}_all.csv", use_container_width=True)
+                           f"pharma_name_gen_{stamp}_all.csv", use_container_width=True)
         d2.download_button("Download run manifest (JSON)",
                            json.dumps({**system.manifest(),
                                        "request": report.request,
                                        "stats": report.stats}, indent=2, default=str),
-                           f"nomina_{stamp}_manifest.json", use_container_width=True)
+                           f"pharma_name_gen_{stamp}_manifest.json", use_container_width=True)
 
 with tab_arch:
     st.code(ins.architecture_summary(system), language="text")
@@ -188,7 +189,7 @@ with tab_eval:
     st.caption("Known-confusable pairs (FDA / ISMP documented dispensing errors) against "
                "random pairs from the same corpus.")
     if st.button("Run verifier evaluation"):
-        from nomina import evaluation as ev
+        from pharma_name_gen import evaluation as ev
         with st.spinner("Scoring pairs…"):
             r = ev.evaluate_verifier(system, n_negative=300)
         c = st.columns(4)

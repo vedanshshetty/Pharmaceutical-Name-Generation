@@ -1,5 +1,5 @@
 """
-NOMINA NameQuality — the objective that says whether a name is any *good*.
+NameQuality — the objective that says whether a name is any *good*.
 
 Why this module exists
 ----------------------

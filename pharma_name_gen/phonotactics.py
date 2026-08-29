@@ -1,5 +1,5 @@
 """
-NOMINA induced phonotactics — a syllable grammar learned from real names.
+Induced phonotactics — a syllable grammar learned from real names.
 
 The problem with a hand-written grammar
 ---------------------------------------

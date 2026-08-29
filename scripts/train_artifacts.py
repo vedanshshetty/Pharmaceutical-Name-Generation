@@ -25,8 +25,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from nomina import build_system
-from nomina.verifier import VerifierConfig
+from pharma_name_gen import build_system
+from pharma_name_gen.verifier import VerifierConfig
 
 
 def main() -> int:

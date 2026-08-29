@@ -5,7 +5,7 @@ this file explains the reasoning that does not change between runs.
 
 ## The contract
 
-`nomina/contracts.py` is the API boundary. Generation and screening were built by
+`pharma_name_gen/contracts.py` is the API boundary. Generation and screening were built by
 different people and neither imports the other's internals; both validate against these
 Pydantic models. Schema version 1.1.0.
 

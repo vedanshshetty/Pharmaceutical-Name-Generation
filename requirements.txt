@@ -1,4 +1,4 @@
-# NOMINA runtime dependencies. Pinned to minor versions: the point of a lockfile is
+# Runtime dependencies. Pinned to minor versions: the point of a lockfile is
 # that a reviewer running this in six months gets the numbers in the paper.
 pandas>=2.0,<3.0
 pydantic>=2.5,<3.0

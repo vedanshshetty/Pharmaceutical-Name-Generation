@@ -22,7 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from nomina import data_layer as dl
+from pharma_name_gen import data_layer as dl
 
 
 def main() -> int:

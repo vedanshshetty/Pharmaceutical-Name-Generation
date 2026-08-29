@@ -23,12 +23,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-dev.txt
       - name: Lint
-        run: ruff check nomina tests --output-format=github
+        run: ruff check pharma_name_gen tests --output-format=github
         continue-on-error: true
       - name: Test
-        # NOMINA_OFFLINE forces the committed snapshot. CI must never depend on
+        # PHARMA_NAME_GEN_OFFLINE forces the committed snapshot. CI must never depend on
         # openFDA or EMA being reachable: a red build should mean our code broke,
         # not that a regulator's API had a bad afternoon.
         env:
-          NOMINA_OFFLINE: "1"
-        run: pytest --cov=nomina --cov-report=term-missing
+          PHARMA_NAME_GEN_OFFLINE: "1"
+        run: pytest --cov=pharma_name_gen --cov-report=term-missing

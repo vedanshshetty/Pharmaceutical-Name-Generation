@@ -1,5 +1,5 @@
 """
-NOMINA introspection — `model.summary()` for a pipeline rather than a network.
+Introspection — `model.summary()` for a pipeline rather than a network.
 
 Purpose
 -------
@@ -82,7 +82,7 @@ def architecture_summary(system) -> str:
                    f"{comp:<{width[1]}}{cfg[:width[2]-1]:<{width[2]}}{size:<{width[3]}}")
         last = stage
     out.append("=" * sum(width))
-    out.append(f"NOMINA v{m['nomina_version']}   git={m['git_sha'] or 'n/a'}   "
+    out.append(f"Generative-Verifier v{m['system_version']}   git={m['git_sha'] or 'n/a'}   "
                f"schema={system.verifier.verify('a' * 6, target_type='brand').verifier_version}")
     return "\n".join(out)
 

@@ -12,7 +12,7 @@ def code(src): C.append({"cell_type": "code", "metadata": {}, "execution_count":
 # ---------------------------------------------------------------- 0. Title
 md(r"""
 <div style="background:linear-gradient(135deg,#0b3d5c 0%,#1a7a8c 100%);color:#fff;padding:28px 32px;border-radius:12px">
-<h1 style="margin:0;font-size:2.1em;letter-spacing:.5px">NOMINA</h1>
+<h1 style="margin:0;font-size:2.1em;letter-spacing:.5px">Generative-Verifier Architecture</h1>
 <p style="margin:6px 0 0;font-size:1.08em;opacity:.93">
 Regulation-aware generation and screening of pharmaceutical names
 </p>
@@ -24,7 +24,7 @@ Generic (INN/USAN) and proprietary (brand) pipelines &middot; live FDA / EMA / R
 
 ### What this notebook is
 
-The single entry point. All logic lives in the `nomina` package; this notebook
+The single entry point. All logic lives in the `pharma_name_gen` package; this notebook
 **orchestrates and explains**, it does not implement. Run it top to bottom.
 
 | Section | What it covers |
@@ -80,7 +80,7 @@ from pathlib import Path
 REPO = "https://github.com/vedanshshetty/Pharmaceutical-Name-Generation.git"
 BRANCH = "production"          # pinned; never the default branch
 
-if Path("nomina").is_dir():
+if Path("pharma_name_gen").is_dir():
     ROOT = Path.cwd()
 else:
     target = Path("Pharmaceutical-Name-Generation")
@@ -103,9 +103,9 @@ import pandas as pd
 pd.set_option("display.max_colwidth", 60)
 pd.set_option("display.width", 200)
 
-from nomina import build_system, PipelineConfig, TargetType
-from nomina.verifier import VerifierConfig
-from nomina import introspect as ins
+from pharma_name_gen import build_system, PipelineConfig, TargetType
+from pharma_name_gen.verifier import VerifierConfig
+from pharma_name_gen import introspect as ins
 
 # ---- knobs you may want to change before the first build --------------------
 USE_LIVE_DATA = True      # False forces the committed snapshot (fully offline)
@@ -227,7 +227,7 @@ impossible rather than merely penalised.
 """)
 
 code(r"""
-from nomina.phonotactics import InducedGrammar
+from pharma_name_gen.phonotactics import InducedGrammar
 grammar = InducedGrammar.induce(system.training.prefixes)
 print(grammar.summary())
 
@@ -244,7 +244,7 @@ verifier's structured payloads and turns them into sampling pressure.
 """)
 
 code(r"""
-from nomina.orchestrator import NominaPipeline
+from pharma_name_gen.orchestrator import pharma_name_genPipeline
 print(ins.source_code(NominaPipeline._learn_from_rejection))
 """)
 
@@ -486,7 +486,7 @@ score would not be measuring confusability and no threshold could rescue it.
 """)
 
 code(r"""
-from nomina import evaluation as ev
+from pharma_name_gen import evaluation as ev
 verif = ev.evaluate_verifier(system, n_negative=400)
 print(f"confusable pairs   n={verif['n_confusable_pairs']:<4} mean score {verif['mean_confusable_score']}")
 print(f"random pairs       n={verif['n_random_pairs']:<4} mean score {verif['mean_random_score']}")
@@ -585,7 +585,7 @@ A winners-only table cannot answer the question a reviewer actually asks, which 
 """)
 
 code(r"""
-from nomina.sweep import (run_sweep, acceptance_by_difficulty, proposer_contribution,
+from pharma_name_gen.sweep import (run_sweep, acceptance_by_difficulty, proposer_contribution,
                           failure_profile, quality_component_correlations,
                           DEFAULT_TARGETS)
 
@@ -666,7 +666,7 @@ if LAST_REPORT:
     manifest["last_run"] = {"request": LAST_REPORT.request, "stats": LAST_REPORT.stats}
 
 Path(f"results/run_{stamp}_manifest.json").write_text(json.dumps(manifest, indent=2, default=str))
-print(json.dumps({k: manifest[k] for k in ("nomina_version", "git_sha", "built_at")},
+print(json.dumps({k: manifest[k] for k in ("system_version", "git_sha", "built_at")},
                  indent=2))
 print(f"\ndata: {manifest['data']['mode']}  fingerprint={manifest['data']['fingerprint']}")
 print(f"wrote results/run_{stamp}_*.csv and _manifest.json")

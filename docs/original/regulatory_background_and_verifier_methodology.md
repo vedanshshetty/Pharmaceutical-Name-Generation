@@ -1,4 +1,4 @@
-# NOMINA — Regulatory Background and Verifier Methodology
+# Regulatory Background and Verifier Methodology
 
 *Person B sections. Written to drop into the report with light editing; every claim about
 regulatory practice is sourced, and every number about our own system comes from the
@@ -8,7 +8,7 @@ executed verifier notebook.*
 
 ## 1. Scope boundary (put this in the introduction, not a footnote)
 
-NOMINA's verifier automates the **computationally checkable first pass** of pharmaceutical
+The verifier automates the **computationally checkable first pass** of pharmaceutical
 name review. It does not replicate, replace, or approximate the whole of regulatory review.
 
 What real review contains that we do not model:
@@ -148,7 +148,7 @@ serving two different purposes, and Section 6 shows our reimplementation behaves
 
 ---
 
-## 4. What the NOMINA verifier implements
+## 4. What the verifier implements
 
 Six checks. V1 is the POCA reimplementation; V2–V5 encode the further regulatory constraints
 described above.

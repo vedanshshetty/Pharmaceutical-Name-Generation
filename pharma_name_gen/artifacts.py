@@ -1,5 +1,5 @@
 """
-NOMINA artifact store — build once, reuse everywhere, publish to the repository.
+Artifact store — build once, reuse everywhere, publish to the repository.
 
 What gets persisted and why
 ---------------------------
@@ -49,10 +49,10 @@ ARTIFACT_FORMAT_VERSION = "1.0"
 
 _HERE = Path(__file__).resolve().parent
 PACKAGE_ROOT = _HERE.parent
-ARTIFACT_DIR = Path(os.environ.get("NOMINA_ARTIFACT_DIR", PACKAGE_ROOT / "artifacts"))
+ARTIFACT_DIR = Path(os.environ.get("PHARMA_NAME_GEN_ARTIFACT_DIR", PACKAGE_ROOT / "artifacts"))
 
 REMOTE_BASE = os.environ.get(
-    "NOMINA_ARTIFACT_REMOTE",
+    "PHARMA_NAME_GEN_ARTIFACT_REMOTE",
     "https://raw.githubusercontent.com/vedanshshetty/Pharmaceutical-Name-Generation/production/artifacts",
 )
 

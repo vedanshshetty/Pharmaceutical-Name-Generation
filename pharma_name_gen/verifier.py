@@ -1,9 +1,9 @@
 """
-NOMINA — Verifier suite (Person B).
+Verifier suite (Person B).
 
 A from-scratch, dependency-light reimplementation of the algorithm family behind the
 FDA's Phonetic and Orthographic Computer Analysis (POCA) tool, plus the four additional
-regulatory screens the NOMINA architecture requires.
+regulatory screens the generative-verifier architecture requires.
 
     V0  well-formedness      basic input sanity
     V1  similarity           POCA-style composite: orthographic (normalised Levenshtein
@@ -1223,7 +1223,7 @@ def _bigrams(s: str) -> set:
 
 
 class Verifier:
-    """The NOMINA verifier suite: V0-V5 behind one call.
+    """The verifier suite: V0-V5 behind one call.
 
         v = Verifier.from_data_layer(data_layer)
         result = v.verify("metozolol", target_type="generic", target_stem="-olol")

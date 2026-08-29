@@ -1,5 +1,5 @@
 """
-NOMINA sweep harness — run every class, record every attempt, write one CSV.
+Sweep harness — run every class, record every attempt, write one CSV.
 
 Why every attempt and not just the winners
 ------------------------------------------

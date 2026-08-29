@@ -1,5 +1,5 @@
 """
-NOMINA test suite.
+Test suite.
 
 Organised around the defects that were actually found, not around code coverage. Every
 test in `TestRegressions` corresponds to a specific thing the v1 pipeline got wrong and
@@ -10,12 +10,12 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-from nomina.contracts import (
+from pharma_name_gen.contracts import (
     SCHEMA_VERSION, CandidateRequest, FailureCode, RiskBand, TargetType, VerifierResponse,
 )
-from nomina.corpus import build_screening_corpus, build_training_corpus, fold, tokenise
-from nomina.phonotactics import InducedGrammar, parse_syllables
-from nomina.quality import SubstringIndex, score_seam, score_novelty
+from pharma_name_gen.corpus import build_screening_corpus, build_training_corpus, fold, tokenise
+from pharma_name_gen.phonotactics import InducedGrammar, parse_syllables
+from pharma_name_gen.quality import SubstringIndex, score_seam, score_novelty
 
 
 # ===========================================================================
@@ -86,7 +86,7 @@ class TestRegressions:
         """The verifier's blended score is 0.6*phonotactic + 0.4*typicality. Ranking on
         it would have the objective rewarding corpus-hugging through one term while
         punishing it through another."""
-        from nomina.quality import score_pronounceability
+        from pharma_name_gen.quality import score_pronounceability
         r = system.verifier.verify("metoprolol", target_type="generic", target_stem="-olol")
         _, detail = score_pronounceability(r)
         assert "phonotactic" in detail and "articulatory_ease" in detail
@@ -284,7 +284,7 @@ class TestQuality:
 
     def test_v2_output_beats_v1_output_on_the_same_objective(self, system):
         """The headline claim, as a test rather than an assertion."""
-        from nomina.evaluation import compare_architectures
+        from pharma_name_gen.evaluation import compare_architectures
         result = compare_architectures(system, n=10)
         summary = result["summary"]
         v1 = summary.loc["v1 (four independent strategies)", "mean_quality"]
@@ -321,7 +321,7 @@ class TestQuality:
 class TestVerifierDiscrimination:
 
     def test_separates_known_confusable_pairs_from_random_pairs(self, system):
-        from nomina.evaluation import evaluate_verifier
+        from pharma_name_gen.evaluation import evaluate_verifier
         r = evaluate_verifier(system, n_negative=150)
         assert r["roc_auc"] > 0.90
         assert r["separation"] > 15

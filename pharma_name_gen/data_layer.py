@@ -1,5 +1,5 @@
 """
-NOMINA data layer — live-first, static-fallback reference data with provenance.
+Reference-data layer — live-first, static-fallback reference data with provenance.
 
 Design rules this module enforces:
 
@@ -37,7 +37,7 @@ from typing import Any, Dict, List, Optional, Sequence
 
 import pandas as pd
 
-DATA_LAYER_VERSION = "2.0.0"
+DATA_LAYER_VERSION = "2.1.0"
 
 # --------------------------------------------------------------------------
 # Where things live
@@ -45,11 +45,11 @@ DATA_LAYER_VERSION = "2.0.0"
 
 _HERE = Path(__file__).resolve().parent
 PACKAGE_ROOT = _HERE.parent
-DATA_DIR = Path(os.environ.get("NOMINA_DATA_DIR", PACKAGE_ROOT / "data"))
-CACHE_DIR = Path(os.environ.get("NOMINA_CACHE_DIR", PACKAGE_ROOT / ".nomina_cache"))
+DATA_DIR = Path(os.environ.get("PHARMA_NAME_GEN_DATA_DIR", PACKAGE_ROOT / "data"))
+CACHE_DIR = Path(os.environ.get("PHARMA_NAME_GEN_CACHE_DIR", PACKAGE_ROOT / ".pharma_gen_cache"))
 
 GITHUB_RAW_BASE = os.environ.get(
-    "NOMINA_RAW_BASE",
+    "PHARMA_NAME_GEN_RAW_BASE",
     "https://raw.githubusercontent.com/vedanshshetty/Pharmaceutical-Name-Generation/production",
 )
 
@@ -64,7 +64,7 @@ RXNORM_ALLCONCEPTS = (
     "https://rxnav.nlm.nih.gov/REST/allconcepts.json?tty=IN+BN"
 )
 
-DEFAULT_TIMEOUT = float(os.environ.get("NOMINA_HTTP_TIMEOUT", "30"))
+DEFAULT_TIMEOUT = float(os.environ.get("PHARMA_NAME_GEN_HTTP_TIMEOUT", "30"))
 
 
 # --------------------------------------------------------------------------
@@ -123,7 +123,7 @@ class DataSnapshot:
         }
 
     def summary(self) -> str:
-        lines = [f"NOMINA data snapshot  [{self.mode.upper()}]  fingerprint={self.fingerprint}"]
+        lines = [f"reference data snapshot  [{self.mode.upper()}]  fingerprint={self.fingerprint}"]
         for s in self.sources:
             lines.append(f"  {s.mode:7s} {s.name:18s} rows={s.rows:<7d} {s.note}")
         lines.append(f"  total unique names: {self.manifest()['unique_generic']} generic / "
@@ -165,14 +165,14 @@ def _http_get(url: str, params: Optional[Dict[str, Any]] = None,
     try:
         import requests
         r = requests.get(url, params=params, timeout=timeout,
-                         headers={"User-Agent": f"NOMINA/{DATA_LAYER_VERSION}"})
+headers={"User-Agent": f"pharma-name-gen/{DATA_LAYER_VERSION}"})
         r.raise_for_status()
         return r.content
     except ImportError:
         from urllib.parse import urlencode
         from urllib.request import Request, urlopen
         full = url + ("?" + urlencode(params) if params else "")
-        req = Request(full, headers={"User-Agent": f"NOMINA/{DATA_LAYER_VERSION}"})
+        req = Request(full, headers={"User-Agent": f"pharma-name-gen/{DATA_LAYER_VERSION}"})
         with urlopen(req, timeout=timeout) as fh:
             return fh.read()
 
@@ -314,7 +314,7 @@ def _harmonise(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
-OFFLINE = os.environ.get("NOMINA_OFFLINE", "").strip() not in ("", "0", "false", "False")
+OFFLINE = os.environ.get("PHARMA_NAME_GEN_OFFLINE", "").strip() not in ("", "0", "false", "False")
 
 
 def build_snapshot(live: bool = True,

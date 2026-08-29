@@ -1,5 +1,5 @@
 """
-NOMINA LLM proposer — semantic name generation via OpenRouter, free tier only.
+Unused LLM proposer — semantic name generation via OpenRouter, free tier only.
 
 Why free-tier needs its own module
 ----------------------------------

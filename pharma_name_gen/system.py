@@ -1,5 +1,5 @@
 """
-NOMINA system builder — one call that wires everything, with caching and a manifest.
+System builder — one call that wires everything, with caching and a manifest.
 
 This is the single seam between "the modules" and "a working system". It exists so that
 the notebook, the Streamlit app, the sweep harness and the test suite all construct the
@@ -30,7 +30,7 @@ from .orchestrator import (
 from .phonotactics import InducedGrammar
 from .quality import QualityScorer, ShapeReference
 
-NOMINA_VERSION = "2.0.0"
+VERSION = "2.1.0"
 
 
 def _git_sha() -> Optional[str]:
@@ -64,7 +64,7 @@ class NominaSystem:
     def manifest(self) -> Dict[str, Any]:
         """Everything a reviewer needs to establish that two runs are comparable."""
         return {
-            "nomina_version": NOMINA_VERSION,
+            "system_version": VERSION,
             "git_sha": _git_sha(),
             "built_at": self.built_at,
             "data": self.snapshot.manifest(),
@@ -85,7 +85,7 @@ class NominaSystem:
     def summary(self) -> str:
         m = self.manifest()
         return "\n".join([
-            f"NOMINA v{NOMINA_VERSION}   git={m['git_sha'] or 'n/a'}",
+            f"Generative-Verifier v{VERSION}   git={m['git_sha'] or 'n/a'}",
             self.snapshot.summary(),
             f"  screening universe : {self.screening.stats['kept_total_unique']} names",
             f"  training prefixes  : {self.training.stats['unique_prefixes']} unique "

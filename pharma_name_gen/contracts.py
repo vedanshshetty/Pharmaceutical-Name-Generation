@@ -1,5 +1,5 @@
 """
-NOMINA — Interface contract between the Generator (Person A) and the Verifier (Person B).
+Interface contract between the Generator (Person A) and the Verifier (Person B).
 
 This module is the *frozen schema* both halves of the project build against. It is
 deliberately dependency-light (pydantic v2 only) so either side can import it without
@@ -385,7 +385,7 @@ class MockVerifier:
         return VerifierBatchResponse(results=[self.verify(c) for c in batch.candidates])
 
 
-def export_json_schema(path: str = "nomina_contract_schema.json") -> str:
+def export_json_schema(path: str = "pharma_name_gen_contract_schema.json") -> str:
     """Dump both directions of the contract as JSON Schema, for the report appendix."""
     import json
     blob = {

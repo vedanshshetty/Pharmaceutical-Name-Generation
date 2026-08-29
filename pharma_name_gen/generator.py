@@ -1,5 +1,5 @@
 """
-NOMINA — Generator suite (Person A).
+Generator suite (Person A).
 
 Produces pharmaceutical name candidates and drives them through the Verifier's
 refinement loop until a target number are accepted, or the attempt budget runs out.
@@ -460,7 +460,7 @@ def strategy_llm_baseline(target_class: Optional[str], target_type: TargetType,
                            api_key: Optional[str] = None,
                            client: Optional[Any] = None) -> List[str]:
     """Ask an LLM (Claude) to propose whole candidate names directly, given the
-    regulatory constraints in plain language. This is the strategy that makes NOMINA
+    regulatory constraints in plain language. This is the legacy v1 path of the project;
     a *generative-AI* naming tool rather than a pure statistical-model one -- the
     other three strategies are useful baselines and refinement fallbacks, but this is
     the one that can reason about semantics (e.g. avoiding words that sound like
@@ -770,7 +770,7 @@ class GenerationResult:
 
 
 class Generator:
-    """The NOMINA generator: proposes candidates and drives them through the
+    """The v1 generator: proposes candidates and drives them through the
     verifier's refinement loop.
 
         gen = Generator.from_data_layer(data_layer)
@@ -1016,7 +1016,7 @@ if __name__ == "__main__":
         print("Error: data_layer.py not found.")
         exit(1)
         
-    parser = argparse.ArgumentParser(description="Run NOMINA Generator")
+    parser = argparse.ArgumentParser(description="Run the v1 generator")
     parser.add_argument("--type", type=str, choices=["generic", "brand"], default="generic")
     parser.add_argument("--class-keyword", type=str, default="beta-blocker")
     parser.add_argument("--stem", type=str, default="-olol")
