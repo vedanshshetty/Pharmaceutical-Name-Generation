@@ -421,28 +421,24 @@ quality during proposal at microsecond rather than millisecond cost.
 \centering
 \begin{tikzpicture}[x=1cm, y=1cm]
 \footnotesize
-\node[propblk, anchor=west, text width=34mm, minimum height=9mm] (draw) at (0.5, 1.10)
-      {\textbf{draw batch}\\ order-3 char model, reward-guided};
-\node[scrblk, anchor=west, text width=34mm, minimum height=9mm] (verify) at (0.5, 0.00)
+\node[propblk, anchor=west, text width=30mm, minimum height=12mm] (draw) at (0.70, 1.90)
+      {\textbf{draw batch}\\ order-3 char model\\
+       reward-guided, $2\times24$ names};
+\node[scrblk, anchor=west, text width=30mm, minimum height=12mm] (verify) at (0.70, 0.00)
       {\textbf{verify batch}\\ five checks, whole pool};
-\node[qblk, anchor=west, text width=34mm, minimum height=9mm] (score) at (0.5,-1.10)
+\node[qblk, anchor=west, text width=30mm, minimum height=12mm] (score) at (0.70,-1.90)
       {\textbf{score admissible}\\ quality objective, downstream};
 
-\node[lbl, anchor=west, align=left] at (4.10, 1.10)
-      {payload\;\raisebox{1pt}{\code{FAIL|SIMILARITY\_TOO\_HIGH|-xyprazolol}}\\
-       -> down-weight colliding bigrams\\
-       -> ramp temperature $+0.06$/failed round};
-\node[lbl, anchor=west, align=left] at (4.30, 0.00)
-      {rejected -> structured payload,\\
-       top-8 rejects edited for $\le\!3$ rounds};
-\node[lbl, anchor=west] at (4.30,-1.10)
-      {admissible only -> shortlist};
-
-\draw[ar] (draw.east) -- node[midway, above, font=\scriptsize] {24 names} (4.05,1.10);
 \draw[ar] (draw.south) -- (verify.north);
 \draw[ar] (verify.south) -- (score.north);
-\draw[arf] (4.5, 0.68) -- (4.5, 1.42) -- (1.0, 1.42) -- (1.0, 1.15);
-\node[lbl, font=\scriptsize] at (3.05, 1.55) {until $\ge N$ admissible $\ge \theta$};
+
+\draw[arf] (verify.east) -- (8.15, 0.00) |- (draw.east);
+\node[lbl, font=\scriptsize] at (2.30, 2.90) {until $\ge N$ admissible $\ge \theta$};
+
+\node[lbl, anchor=west] at (3.90, 1.35)
+      {\code{\scriptsize FAIL|SIMILARITY\_TOO\_HIGH|-xyprazolol}};
+\node[lbl, anchor=west] at (3.90, 0.90) {down-weight colliding bigrams};
+\node[lbl, anchor=west] at (3.90, 0.45) {ramp temperature $+0.06$/round};
 \end{tikzpicture}
 \caption{Guided n-gram proposal loop. Bigrams from rejection payloads steer
 later draws in the same request; admissible names alone proceed to the quality
