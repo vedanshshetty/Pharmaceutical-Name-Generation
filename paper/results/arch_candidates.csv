@@ -1,0 +1,26 @@
+architecture,proposer,candidate_name,quality_total,composite_risk_score,risk_band,accepted_under_v1_policy,q_distinctiveness,q_novelty,q_pronounceability,q_seam,q_morpheme_hygiene,q_shape,q_typicality
+v1 (four independent strategies),rejection_sampling,erythroolol,27.24,76.15,high,False,0.0,0.15,0.783,0.35,0.12,0.821,0.0
+v1 (four independent strategies),rejection_sampling,benralimolol,55.48,61.74,moderate,True,0.0,0.2,1.0,1.0,1.0,0.731,0.738
+v1 (four independent strategies),rejection_sampling,acycloolol,39.97,62.96,moderate,True,0.0,0.3,0.783,0.35,0.53,0.867,0.387
+v1 (four independent strategies),rejection_sampling,avalolol,60.25,60.18,moderate,True,0.0,0.6,1.0,1.0,1.0,0.912,0.018
+v1 (four independent strategies),rejection_sampling,amoxiolol,55.05,65.9,moderate,True,0.0,0.45,1.0,0.6,1.0,0.852,0.305
+v1 (four independent strategies),constrained_decoding,thodhunolol,69.88,48.46,low,True,0.262,0.771,0.975,1.0,1.0,0.952,0.0
+v1 (four independent strategies),constrained_decoding,roanzensolol,61.96,57.18,moderate,True,0.0,0.8,0.975,1.0,1.0,0.731,0.0
+v1 (four independent strategies),constrained_decoding,hiemfailolol,72.63,49.78,low,True,0.209,1.0,1.0,1.0,1.0,0.862,0.0
+v1 (four independent strategies),constrained_decoding,joatloatolol,62.61,52.41,low,True,0.104,0.8,1.0,1.0,1.0,0.513,0.0
+v1 (four independent strategies),constrained_decoding,snabreistolol,54.77,54.39,low,True,0.024,0.628,0.648,1.0,1.0,0.755,0.0
+v1 (four independent strategies),rl_refined,vancicloolol,35.43,63.21,moderate,True,0.0,0.2,0.869,0.35,0.53,0.731,0.046
+v1 (four independent strategies),rl_refined,eculiolol,54.56,55.0,moderate,True,0.0,0.45,1.0,0.6,1.0,0.852,0.235
+v1 (four independent strategies),rl_refined,vildaolol,58.23,59.11,moderate,True,0.0,0.45,1.0,0.6,1.0,0.983,0.572
+v1 (four independent strategies),rl_refined,famuolol,56.52,60.55,moderate,True,0.0,0.6,1.0,0.6,1.0,0.912,0.0
+v1 (four independent strategies),rl_refined,oxaolol,66.14,62.64,moderate,True,0.0,1.0,1.0,0.6,1.0,0.81,0.378
+v2 (pool-and-select),grammar,lekurtolol,68.98,60.21,moderate,True,0.0,1.0,1.0,1.0,1.0,0.998,0.0
+v2 (pool-and-select),grammar,pusonolol,68.83,60.67,moderate,True,0.0,1.0,1.0,1.0,1.0,0.983,0.0
+v2 (pool-and-select),grammar,huzatolol,68.83,62.89,moderate,True,0.0,1.0,1.0,1.0,1.0,0.983,0.0
+v2 (pool-and-select),grammar,lailkolol,67.59,57.61,moderate,True,0.0,1.0,1.0,1.0,1.0,0.858,0.001
+v2 (pool-and-select),grammar,plifuzolol,67.53,54.74,low,True,0.01,1.0,0.879,1.0,1.0,0.998,0.0
+v2 (pool-and-select),ngram_guided,felyolol,66.28,59.55,moderate,True,0.0,0.6,1.0,1.0,1.0,0.912,0.879
+v2 (pool-and-select),ngram_guided+refined,corolol,65.91,66.05,moderate,True,0.0,1.0,1.0,1.0,1.0,0.685,0.007
+v2 (pool-and-select),ngram_guided,oselkolol,64.55,56.13,moderate,True,0.0,0.68,1.0,1.0,1.0,0.983,0.304
+v2 (pool-and-select),ngram_guided,islatumolol,64.31,54.36,low,True,0.026,0.564,0.894,1.0,1.0,0.821,0.954
+v2 (pool-and-select),ngram_guided,aleterolol,64.27,68.31,moderate,True,0.0,0.517,1.0,1.0,1.0,0.867,0.895

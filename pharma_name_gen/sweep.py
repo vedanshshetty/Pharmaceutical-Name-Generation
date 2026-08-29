@@ -67,6 +67,10 @@ DEFAULT_TARGETS: List[SweepTarget] = [
     SweepTarget("generic", "-parib", "PARP inhibitor", "saturated"),
     SweepTarget("brand", None, "proprietary mark, cardiovascular", "brand"),
     SweepTarget("brand", None, "proprietary mark, oncology", "brand"),
+    SweepTarget("brand", None, "proprietary mark, CNS / neurology", "brand"),
+    SweepTarget("brand", None, "proprietary mark, anti-infective", "brand"),
+    SweepTarget("brand", None, "proprietary mark, respiratory", "brand"),
+    SweepTarget("brand", None, "proprietary mark, dermatology", "brand"),
 ]
 
 
@@ -88,15 +92,23 @@ def run_sweep(system, targets: Optional[Sequence[SweepTarget]] = None,
               n_per_class: int = 10,
               out_csv: Optional[Path] = None,
               progress: Optional[Callable[[str], None]] = None,
-              continue_on_error: bool = True) -> Tuple[pd.DataFrame, Dict[str, Any]]:
+              continue_on_error: bool = True,
+              seed: Optional[int] = None) -> Tuple[pd.DataFrame, Dict[str, Any]]:
     """Run the whole sweep and return (every_attempt_dataframe, summary).
 
     Errors in one cell are recorded and the sweep continues. A sweep that dies on class
     nine of sixteen and loses the first eight is worse than useless, because the failure
     is usually something incidental like a stem with no siblings in the corpus.
+
+    `seed` (when given) overrides the system seed for the whole sweep by mutating the
+    shared pipeline config, which the pipelines and proposers reference directly. That is
+    what lets an experiment run the same cells across seeds {1, 2, 3} and report spread
+    rather than a single flattering point estimate.
     """
     say = progress or (lambda _m: None)
     targets = list(targets or DEFAULT_TARGETS)
+    if seed is not None:
+        system.config.seed = seed
     rows: List[Dict[str, Any]] = []
     per_class: List[Dict[str, Any]] = []
     started = datetime.now(timezone.utc).isoformat()
@@ -153,6 +165,7 @@ def run_sweep(system, targets: Optional[Sequence[SweepTarget]] = None,
         "started_at": started,
         "finished_at": datetime.now(timezone.utc).isoformat(),
         "wall_seconds": round(time.perf_counter() - t_all, 1),
+        "seed": system.config.seed,
         "targets": len(targets),
         "n_per_class": n_per_class,
         "total_candidates": int(len(df)),
