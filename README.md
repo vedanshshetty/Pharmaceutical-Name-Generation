@@ -30,7 +30,9 @@ acceptance, proposer contribution — are its evidence.
 ## Quickstart
 
 ```bash
-git clone -b production https://github.com/vedanshshetty/Pharmaceutical-Name-Generation.git
+git clone https://github.com/vedanshshetty/Pharmaceutical-Name-Generation.git
+cd Pharmaceutical-Name-Generation
+git checkout main
 cd Pharmaceutical-Name-Generation
 pip install -r requirements.txt
 ```
