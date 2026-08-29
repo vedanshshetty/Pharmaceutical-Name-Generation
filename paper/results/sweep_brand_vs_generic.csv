@@ -1,0 +1,7 @@
+target_type,metric,mean,std,seed_values
+brand,accept_rate,0.501,0.051,"[0.492, 0.455, 0.556]"
+brand,mean_quality,60.743,0.372,"[60.445, 60.624, 61.16]"
+brand,best_quality,68.15,1.042,"[68.33, 69.09, 67.03]"
+generic,accept_rate,0.241,0.003,"[0.241, 0.244, 0.239]"
+generic,mean_quality,62.345,0.245,"[62.073, 62.55, 62.411]"
+generic,best_quality,75.43,0.191,"[75.65, 75.33, 75.31]"

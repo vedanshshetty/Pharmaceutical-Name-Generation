@@ -1,0 +1,5 @@
+difficulty,candidates,accepted,accept_rate,mean_quality,mean_risk
+brand,1152,576,0.5,60.741,70.181
+roomy,1356,417,0.308,63.715,66.086
+crowded,2972,669,0.225,62.422,66.387
+saturated,2601,585,0.225,61.532,63.169

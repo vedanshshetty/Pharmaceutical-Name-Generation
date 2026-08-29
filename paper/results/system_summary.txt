@@ -1,0 +1,9 @@
+Generative-Verifier v2.1.0   git=7b5f9ae
+reference data snapshot  [STATIC]  fingerprint=d9cc79de5be14f36
+  static  committed-snapshot rows=31848   baseline corpus committed to the repository
+  static  INN/USAN stems     rows=277     curated from the WHO INN stem book and USAN list
+  total unique names: 19685 generic / 14444 brand;  stems: 277
+  screening universe : 19635 names
+  training prefixes  : 1608 unique (stem coverage 14% of 12542 generic tokens)
+  brand training set : 4672 marks
+  shape target       : generic 9.7 chars / 4.0 syll, brand 7.8 chars / 3.1 syll

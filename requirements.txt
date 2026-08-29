@@ -1,0 +1,11 @@
+# Runtime dependencies. Pinned to minor versions: the point of a lockfile is
+# that a reviewer running this in six months gets the numbers in the paper.
+pandas>=2.0,<3.0
+pydantic>=2.5,<3.0
+requests>=2.31,<3.0
+openpyxl>=3.1,<4.0          # EMA medicines register is an .xlsx export
+
+# Optional. The system runs fully without every one of these.
+matplotlib>=3.7,<4.0        # evaluation figures
+ipywidgets>=8.0,<9.0        # main.ipynb interactive controls
+streamlit>=1.30,<2.0        # app/streamlit_app.py

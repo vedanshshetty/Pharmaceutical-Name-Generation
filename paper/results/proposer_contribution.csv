@@ -1,0 +1,3 @@
+proposer_family,proposed,accepted,accept_rate,mean_quality,best_quality,shortlisted,shortlist_share
+grammar,4251,1130,0.266,63.596,75.33,415,0.692
+ngram_guided,3830,1117,0.292,60.467,75.65,185,0.308

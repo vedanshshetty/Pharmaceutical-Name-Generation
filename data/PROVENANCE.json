@@ -1,0 +1,54 @@
+{
+  "data_layer_version": "2.0.0",
+  "built_at": "2026-08-26T15:53:16.104842+00:00",
+  "mode": "live",
+  "fingerprint": "d9cc79de5be14f36",
+  "name_rows": 31848,
+  "unique_generic": 19685,
+  "unique_brand": 14444,
+  "stem_rows": 277,
+  "sources": [
+    {
+      "name": "committed-snapshot",
+      "endpoint": "local:C:\\Users\\AviralSharma\\Desktop\\Desktop\\College stuff\\LY\\Semester 7\\Gen AI\\IAs\\IA1\\Pharmaceutical-Name-Generation\\data\\existing_drug_names.csv",
+      "mode": "static",
+      "rows": 31848,
+      "fetched_at": null,
+      "note": "baseline corpus committed to the repository"
+    },
+    {
+      "name": "openFDA:ndc",
+      "endpoint": "https://api.fda.gov/drug/ndc.json",
+      "mode": "live",
+      "rows": 20000,
+      "fetched_at": "2026-08-26T15:53:08.676586+00:00",
+      "note": "58.2s"
+    },
+    {
+      "name": "RxNorm:IN+BN",
+      "endpoint": "https://rxnav.nlm.nih.gov/REST/allconcepts.json?tty=IN+BN",
+      "mode": "live",
+      "rows": 19786,
+      "fetched_at": "2026-08-26T15:53:15.030358+00:00",
+      "note": "6.4s"
+    },
+    {
+      "name": "EMA:medicines",
+      "endpoint": "https://www.ema.europa.eu/en/documents/other/medicines-output-medicines-report_en.xlsx",
+      "mode": "failed",
+      "rows": 0,
+      "fetched_at": null,
+      "note": "HTTPError: 404 Client Error: Not Found for url: https://www.ema.europa.eu/en/documents/other/medicines-output-medicines-report_en.xlsx"
+    },
+    {
+      "name": "INN/USAN stems",
+      "endpoint": "local:C:\\Users\\AviralSharma\\Desktop\\Desktop\\College stuff\\LY\\Semester 7\\Gen AI\\IAs\\IA1\\Pharmaceutical-Name-Generation\\data\\inn_usan_stems.csv",
+      "mode": "static",
+      "rows": 277,
+      "fetched_at": null,
+      "note": "curated from the WHO INN stem book and USAN list"
+    }
+  ],
+  "fetched_by": "scripts/fetch_reference_data.py",
+  "fetched_at": "2026-08-26T15:53:16.354796+00:00"
+}

@@ -1,0 +1,10 @@
+,component,mean,std,corr_with_total
+1,novelty,0.766,0.229,0.784
+5,shape,0.836,0.185,0.552
+4,morpheme_hygiene,0.979,0.099,0.501
+7,stem_avoidance,0.992,0.073,0.459
+8,memorability,0.785,0.121,0.44
+2,pronounceability,0.877,0.114,0.364
+3,seam,0.994,0.045,0.177
+6,typicality,0.214,0.302,-0.095
+0,distinctiveness,0.003,0.019,-0.134
