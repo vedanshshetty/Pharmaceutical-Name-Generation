@@ -109,13 +109,11 @@ from pharma_name_gen import introspect as ins
 
 # ---- knobs you may want to change before the first build --------------------
 USE_LIVE_DATA = True      # False forces the committed snapshot (fully offline)
-USE_LLM       = True      # needs OPENROUTER_API_KEY; degrades silently if absent
 USE_ARTIFACTS = True      # reuse cached corpora and trained models where valid
 # -----------------------------------------------------------------------------
 
 system = build_system(
     live=USE_LIVE_DATA,
-    use_llm=USE_LLM,
     use_artifacts=USE_ARTIFACTS,
     # stem_aware_similarity strips the MANDATED stem before scoring, so distinctiveness
     # measures the part the namer actually controls. Without it, every name in a
@@ -244,7 +242,7 @@ verifier's structured payloads and turns them into sampling pressure.
 """)
 
 code(r"""
-from pharma_name_gen.orchestrator import pharma_name_genPipeline
+from pharma_name_gen.orchestrator import NominaPipeline
 print(ins.source_code(NominaPipeline._learn_from_rejection))
 """)
 
@@ -304,8 +302,6 @@ w_pool = W.IntSlider(value=24, min=8, max=64, step=4, description="Pool/proposer
                      continuous_update=False, style={"description_width": "120px"})
 w_rounds = W.IntSlider(value=4, min=1, max=8, description="Max rounds:",
                        continuous_update=False, style={"description_width": "120px"})
-w_llm = W.Checkbox(value=bool(system.generic.llm), description="Escalate to LLM when the pool is thin",
-                   indent=False, disabled=not system.generic.llm)
 w_strict = W.Checkbox(value=False, description="Strict: reject the 55-70 review band",
                       indent=False)
 w_seed = W.IntText(value=20260826, description="Seed:", style={"description_width": "120px"})
@@ -322,7 +318,7 @@ w_type.observe(_toggle, "value"); _toggle()
 controls = W.VBox([
     W.HTML("<h3 style='margin-bottom:4px'>Target</h3>"), w_type, w_class, w_brand_class,
     W.HTML("<h3 style='margin-bottom:4px'>Search effort</h3>"), w_n, w_pool, w_rounds,
-    W.HTML("<h3 style='margin-bottom:4px'>Policy</h3>"), w_llm, w_strict, w_seed,
+    W.HTML("<h3 style='margin-bottom:4px'>Policy</h3>"), w_strict, w_seed,
     W.HTML("<br>"), w_go,
 ])
 display(controls, out)
@@ -348,7 +344,7 @@ def render(report):
             f"<b>{s['returned']}</b> names returned from <b>{s['candidates_evaluated']}</b> evaluated "
             f"&middot; {s['admissible']} admissible ({s['band_low']} clear, {s['band_moderate']} review-band) "
             f"&middot; best quality <b>{s['best_quality']}</b> "
-            f"&middot; {s['verifier_calls']} screens, {s['llm_calls']} LLM calls "
+            f"&middot; {s['verifier_calls']} screens "
             f"&middot; {s['wall_seconds']}s</div>")
     rows = []
     for i, c in enumerate(report.shortlist, 1):
@@ -392,7 +388,7 @@ def on_go(_):
         pipeline = system.pipeline(target_type)
         pipeline.config = PipelineConfig(
             pool_per_proposer=w_pool.value, max_rounds=w_rounds.value,
-            shortlist_size=w_n.value, use_llm=w_llm.value,
+            shortlist_size=w_n.value,
             treat_moderate_as_failure=w_strict.value, seed=w_seed.value)
         for p in pipeline.proposers:
             if hasattr(p, "config"):

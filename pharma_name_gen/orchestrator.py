@@ -9,9 +9,9 @@ established by inspection and confirmed by running it:
 
 1. **They were not four ideas.** `rl_refined` used the *same* n-gram model as
    `rejection_sampling`, adding a bigram penalty and a rising temperature. That is a
-   `guided: bool` on one sampler, not a fourth mechanism. The honest inventory is three
-   structurally different proposers (phonological grammar, corpus statistics, semantic
-   reasoning) and one modifier.
+   `guided: bool` on one sampler, not a fourth mechanism. The honest inventory is two
+   structurally different proposers (phonological grammar, corpus statistics) and one
+   modifier.
 
 2. **They never combined.** Each ran alone. Whichever was selected produced the whole
    shortlist, so a run learned nothing about what the others would have proposed. A
@@ -19,19 +19,16 @@ established by inspection and confirmed by running it:
    the first proposer that clears the bar optimises for cost and discards, unseen, the
    possibility that another proposer had something better.
 
-3. **Feedback was applied asymmetrically.** The guided n-gram path received this run's
-   rejections. The LLM path received a static sample of real names and was never told
-   what had already failed, despite being the only proposer able to reason about *why*.
+3. **Feedback was applied asymmetrically.** Only the guided n-gram path received this
+   run's rejections. The plain sampler and the grammar saw none of them, so the free
+   proposers converged at different rates for no structural reason.
 
 The architecture here
 ---------------------
     propose in parallel  ->  pool  ->  verify the whole pool  ->  score  ->  select
 
 Both free proposers run for every request. Nothing is discarded before it has been
-seen. Selection is on the NameQuality objective, not on arrival order. The LLM is not
-in the free pool because its unit cost is different in kind (money and seconds against
-CPU microseconds); it is escalated to only when the free pool's best result is thin,
-which is the one situation where paying for semantic reasoning is justified.
+seen. Selection is on the NameQuality objective, not on arrival order.
 
 `rl_refined` survives as what it always was: the *batch policy* for the statistical
 proposer. Drawing N candidates independently from one biased sampler produces N
@@ -77,11 +74,9 @@ class PipelineConfig:
     max_refinement_rounds: int = 3     # edits applied to one lineage before abandoning
     refine_top_k: int = 8              # only the most promising rejects are worth editing
 
-    # LLM escalation
-    use_llm: bool = True
-    llm_quality_threshold: float = 62.0   # escalate when the free pool's best is below this
-    llm_batch: int = 12
-    llm_max_calls: int = 2
+    # Early-exit quality bar: stop once enough accepted candidates clear it, instead
+    # of grinding through the remaining rounds.
+    quality_target: float = 62.0
 
     # Guided (RL-style) sampling
     guided: bool = True
@@ -113,7 +108,7 @@ class PipelineConfig:
 class Candidate:
     """One proposed name and everything known about it."""
     name: str
-    proposer: str                      # 'grammar' | 'ngram' | 'ngram_guided' | 'llm'
+    proposer: str                      # 'grammar' | 'ngram' | 'ngram_guided'
     round: int = 0
     lineage: List[str] = field(default_factory=list)
     response: Optional[VerifierResponse] = None
@@ -164,7 +159,6 @@ class RunReport:
     stats: Dict[str, Any]
     config: Dict[str, Any]
     request: Dict[str, Any]
-    llm_log: List[Dict[str, Any]] = field(default_factory=list)
 
     def rows(self) -> List[Dict[str, Any]]:
         return [c.to_row() for c in self.all_candidates]
@@ -358,28 +352,6 @@ class NGramProposer(Proposer):
         return out
 
 
-class LLMProposer(Proposer):
-    """Semantic proposal. Metered, escalated to, never in the free pool."""
-    name = "llm"
-    cost = "metered"
-
-    def __init__(self, client, avoid_provider: Callable[[GenerationContext], List[str]]):
-        self.client = client
-        self._avoid = avoid_provider
-        self.log: List[Dict[str, Any]] = []
-
-    def propose(self, n: int, ctx: GenerationContext) -> List[str]:
-        res = self.client.propose(
-            n=n, target_type=ctx.target_type.value, target_class=ctx.target_class,
-            target_stem=ctx.target_stem, avoid_names=self._avoid(ctx),
-            rejected_this_run=ctx.rejected[-20:],
-        )
-        self.log.append({"model": res.model_used, "attempts": res.attempts,
-                         "n_returned": len(res.names), "error": res.error,
-                         "latency_s": res.latency_s})
-        return res.names
-
-
 # ===========================================================================
 # The pipeline
 # ===========================================================================
@@ -395,7 +367,6 @@ class NominaPipeline:
     def __init__(self, target_type: TargetType, verifier, scorer,
                  proposers: Sequence[Proposer], refine_fn: Callable,
                  config: Optional[PipelineConfig] = None,
-                 llm_proposer: Optional[LLMProposer] = None,
                  sibling_fn: Optional[Callable[[str], List[str]]] = None):
         self.target_type = target_type
         self.verifier = verifier
@@ -403,7 +374,6 @@ class NominaPipeline:
         self.proposers = list(proposers)
         self.refine = refine_fn
         self.config = config or PipelineConfig()
-        self.llm = llm_proposer
         self._siblings = sibling_fn or (lambda stem: [])
 
     # -- verification ------------------------------------------------------
@@ -470,7 +440,6 @@ class NominaPipeline:
         everything: List[Candidate] = []
         accepted: List[Candidate] = []
         verify_calls = 0
-        llm_calls = 0
 
         for rnd in range(1, cfg.max_rounds + 1):
             ctx.round = rnd - 1
@@ -533,37 +502,13 @@ class NominaPipeline:
                     cur = nxt
 
             # 4. Stop when we have enough GOOD names, not merely enough passing ones.
-            good = [c for c in accepted if c.quality_score >= cfg.llm_quality_threshold]
+            good = [c for c in accepted if c.quality_score >= cfg.quality_target]
             if len(good) >= want:
                 say(f"round {rnd}: {len(good)} candidates at or above quality "
-                    f"{cfg.llm_quality_threshold}; stopping")
+                    f"{cfg.quality_target}; stopping")
                 break
 
-        # 5. ESCALATE to the metered proposer only if the free pool came up thin.
-        best_free = max((c.quality_score for c in accepted), default=0.0)
-        if (self.llm and cfg.use_llm and llm_calls < cfg.llm_max_calls
-                and (best_free < cfg.llm_quality_threshold or len(accepted) < want)):
-            say(f"free pool best quality {best_free:.1f} < {cfg.llm_quality_threshold}; "
-                f"escalating to the LLM proposer")
-            ctx.round += 1
-            names = self.llm.propose(cfg.llm_batch, ctx)
-            llm_calls += 1
-            for nm in names:
-                if nm in {c.name for c in everything}:
-                    continue
-                resp = self._verify(nm, ctx, "llm")
-                verify_calls += 1
-                cand = Candidate(name=nm, proposer="llm", round=ctx.round + 1,
-                                 lineage=[nm], response=resp)
-                cand.quality = self.scorer.score(nm, resp, self.target_type, target_stem)
-                cand.accepted = self._admissible(resp)
-                everything.append(cand)
-                if cand.accepted:
-                    accepted.append(cand)
-                else:
-                    self._learn_from_rejection(ctx, nm, resp)
-
-        # 6. SELECT on the objective, not on arrival order.
+        # 5. SELECT on the objective, not on arrival order.
         pool_for_selection = [c for c in accepted
                               if c.quality_score >= cfg.min_shortlist_quality]
         shortlist = sorted(pool_for_selection,
@@ -594,7 +539,6 @@ class NominaPipeline:
             "band_moderate": sum(1 for c in accepted if c.response
                                  and c.response.risk_band == RiskBand.MODERATE),
             "verifier_calls": verify_calls,
-            "llm_calls": llm_calls,
             "best_quality": round(shortlist[0].quality_score, 2) if shortlist else None,
             "mean_shortlist_quality": round(
                 sum(c.quality_score for c in shortlist) / len(shortlist), 2) if shortlist else None,
@@ -607,5 +551,4 @@ class NominaPipeline:
             config=cfg.to_dict(),
             request={"target_type": self.target_type.value, "target_class": target_class,
                      "target_stem": target_stem, "n_shortlist": want},
-            llm_log=list(self.llm.log) if self.llm else [],
         )

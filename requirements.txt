@@ -6,7 +6,6 @@ requests>=2.31,<3.0
 openpyxl>=3.1,<4.0          # EMA medicines register is an .xlsx export
 
 # Optional. The system runs fully without every one of these.
-openai>=1.30,<2.0           # OpenRouter is OpenAI-API-compatible; LLM proposer only
 matplotlib>=3.7,<4.0        # evaluation figures
 ipywidgets>=8.0,<9.0        # main.ipynb interactive controls
 streamlit>=1.30,<2.0        # app/streamlit_app.py

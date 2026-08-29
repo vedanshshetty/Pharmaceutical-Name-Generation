@@ -1,15 +1,17 @@
-# NOMINA
+# Generative-Verifier Architecture for Regulation-Compliant Pharmaceutical Name Generation
 
 **Regulation-aware generation and screening of pharmaceutical names.**
 
-NOMINA proposes candidate drug names and screens them against the constraints that
+This system proposes candidate drug names and screens them against the constraints that
 actually govern pharmaceutical nomenclature: INN/USAN stem conformance, look-alike and
 sound-alike collision with marketed products, trademark conflict, phonotactic
 well-formedness, and adverse cross-lingual meaning. It runs two separate pipelines,
 because generic and proprietary names have opposed objectives.
 
 Everything is reproducible: content-addressed artifacts, seeded runs, and a manifest on
-every result recording the corpus fingerprint, the data mode, and the git SHA.
+every result recording the corpus fingerprint, the data mode, and the git SHA. There is
+no metered proposer and nothing in a run depends on a remote service, an API key, or a
+rate limit.
 
 ---
 
@@ -36,8 +38,8 @@ streamlit run app/streamlit_app.py
 **Library:**
 
 ```python
-from nomina import build_system
-from nomina.verifier import VerifierConfig
+from pharma_name_gen import build_system
+from pharma_name_gen.verifier import VerifierConfig
 
 system = build_system(live=True, verifier_config=VerifierConfig(stem_aware_similarity=True))
 report = system.generic.generate(n_shortlist=10,
@@ -50,7 +52,7 @@ for c in report.shortlist:
 report.to_frame().to_csv("all_attempts.csv", index=False)   # every candidate, not just winners
 ```
 
-Runs fully offline with no API keys. `NOMINA_OFFLINE=1` forces the committed snapshot.
+Runs fully offline with no API keys. `PHARMA_NAME_GEN_OFFLINE=1` forces the committed snapshot.
 
 ---
 
@@ -83,8 +85,6 @@ Runs fully offline with no API keys. `NOMINA_OFFLINE=1` forces the committed sna
                     |
             QualityScorer.score()
                     |
-         best quality < threshold?  --yes--> LLMProposer (metered, escalation only)
-                    |
             SELECT top N by quality
                     |
                shortlist
@@ -92,19 +92,18 @@ Runs fully offline with no API keys. `NOMINA_OFFLINE=1` forces the committed sna
 
 | Module | Responsibility |
 |---|---|
-| `nomina/contracts.py` | Pydantic API boundary between generation and screening (schema 1.1.0) |
-| `nomina/data_layer.py` | Live-first, static-fallback reference data with provenance |
-| `nomina/corpus.py` | Screening universe and training corpus, filtered differently on purpose |
-| `nomina/phonotactics.py` | Syllable grammar induced from the corpus |
-| `nomina/verifier.py` | The five regulatory checks and the composite risk score |
-| `nomina/quality.py` | The NameQuality objective, separate generic and brand profiles |
-| `nomina/orchestrator.py` | Pool-and-select pipeline |
-| `nomina/llm.py` | OpenRouter free tier with runtime model resolution |
-| `nomina/artifacts.py` | Content-addressed persistence for corpora and trained models |
-| `nomina/system.py` | Single builder used by every entry point |
-| `nomina/sweep.py` | Multi-class harness logging every attempt |
-| `nomina/evaluation.py` | Discrimination, ablations, architecture comparison |
-| `nomina/introspect.py` | `model.summary()`-style reporting for the notebook |
+| `pharma_name_gen/contracts.py` | Pydantic API boundary between generation and screening (schema 1.1.0) |
+| `pharma_name_gen/data_layer.py` | Live-first, static-fallback reference data with provenance |
+| `pharma_name_gen/corpus.py` | Screening universe and training corpus, filtered differently on purpose |
+| `pharma_name_gen/phonotactics.py` | Syllable grammar induced from the corpus |
+| `pharma_name_gen/verifier.py` | The five regulatory checks and the composite risk score |
+| `pharma_name_gen/quality.py` | The NameQuality objective, separate generic and brand profiles |
+| `pharma_name_gen/orchestrator.py` | Pool-and-select pipeline |
+| `pharma_name_gen/artifacts.py` | Content-addressed persistence for corpora and trained models |
+| `pharma_name_gen/system.py` | Single builder used by every entry point |
+| `pharma_name_gen/sweep.py` | Multi-class harness logging every attempt |
+| `pharma_name_gen/evaluation.py` | Discrimination, ablations, architecture comparison |
+| `pharma_name_gen/introspect.py` | `model.summary()`-style reporting for the notebook |
 
 ---
 
@@ -128,9 +127,9 @@ quietly inflate every distinctiveness margin in the run.
 
 ## Design decisions
 
-Sixteen are documented in full — decision, rejected alternative, reasoning, evidence — in
-`nomina/introspect.py::DESIGN_DECISIONS`, and rendered in section 3 of the notebook. The
-ones that shaped the architecture most:
+Fourteen are documented in full — decision, rejected alternative, reasoning, evidence — in
+`pharma_name_gen/introspect.py::DESIGN_DECISIONS`, and rendered in section 3 of the notebook.
+The ones that shaped the architecture most:
 
 **Pool-and-select, not a cascade.** An early-exit cascade optimises for cost, not
 quality: if the first proposer clears the bar with margin 1.04 it stops, and never learns
@@ -153,53 +152,24 @@ regulatory: it answers whether a name *may* exist. Quality answers whether anyon
 *want* it. Quality ranks what survives and never rescues a rejection, because folding
 preference into the regulatory decision would make the regulatory claim indefensible.
 
-**The LLM escalates, it does not join the free pool.** A unit mismatch: the CPU proposers
-cost microseconds, an LLM call costs seconds and a rate-limit slot. It is invoked when
-the free pool's best quality is thin, which is the one case where semantic reasoning is
-worth paying for.
-
 ---
 
 ## Results
 
-From `results/sweep_all_attempts.csv` — sixteen targets spanning the difficulty range,
-one row per candidate ever evaluated.
+Results for the current version are produced by the sweep harness and evaluation suite and
+reported in `paper/` — the manuscript, the raw attempt-level CSVs, and the scripts that
+reproduce every number from them. Summary tables for the sixteen-default-target sweep
+(roomy/crowded/saturated generic classes plus brand mode) and the verifier discrimination,
+ablation and architecture-comparison numbers live there.
 
 **Verifier discrimination** against FDA/ISMP documented confusable pairs:
 
 | Metric | Value |
 |---|---|
-| ROC AUC | 0.994 |
+| ROC AUC | 0.997 |
 | Mean score, confusable pairs | 64.0 |
-| Mean score, random pairs | 25.1 |
-| Separation | 38.9 |
-
-**Acceptance by class difficulty** — the stratification predicts, which is why it is
-reported rather than assumed:
-
-| Difficulty | Candidates | Accept rate | Mean quality |
-|---|---|---|---|
-| roomy (`-pril`, `-sartan`) | 322 | 41.3% | 65.0 |
-| saturated (`-tinib`, `-mab`) | 631 | 33.9% | 62.2 |
-| crowded (`-olol`, `-prazole`) | 647 | 28.9% | 63.5 |
-
-**Proposer contribution** — the comparison v1's `compare_strategies` was reaching for,
-now conducted over logged pool data rather than forced on the user as a mode switch.
-The two proposers have near-identical accept rates but very different shortlist shares,
-and the n-gram produces the single highest-quality candidate. That split is the
-empirical case for pooling instead of picking one.
-
-**Two findings worth reporting as results, not footnotes:**
-
-1. At the configured reject cutoff of 70, specificity against random pairs is already
-   1.00 while sensitivity to documented confusable pairs is much lower than at the 55
-   review line. The 55-70 band is doing real safety work, which is the direct
-   justification for reporting it explicitly rather than passing it silently.
-
-2. In stem-governed classes, almost every plausible novel name lands in the review band,
-   because the mandated stem itself forces high orthographic similarity to siblings. This
-   is a property of the problem rather than a defect of the screen; stem-aware similarity
-   scoring is how it is handled.
+| Mean score, random pairs | 24.0 |
+| Separation | 39.9 |
 
 ---
 
@@ -210,11 +180,11 @@ empirical case for pooling instead of picking one.
 - Artifacts are content-addressed on the corpus fingerprint plus config hash, so
   changing the stem table produces a different key and stale models are not found.
 - Seeded runs are byte-identical; there is a test asserting it.
-- CI runs the suite on Python 3.10, 3.11 and 3.12 with `NOMINA_OFFLINE=1`, so a red
+- CI runs the suite on Python 3.10, 3.11 and 3.12 with `PHARMA_NAME_GEN_OFFLINE=1`, so a red
   build always means the code broke, never that a regulator's API had a bad afternoon.
 
 ```bash
-pytest                                          # 36 tests
+pytest                                          # 35 tests
 python scripts/fetch_reference_data.py          # refresh the committed snapshot
 python scripts/train_artifacts.py --live        # rebuild and stage artifacts
 ```
@@ -233,9 +203,6 @@ python scripts/train_artifacts.py --live        # rebuild and stage artifacts
    phonological model of each language.
 4. **The trademark check is a proxy** for marketed-name collision, not a registered
    trademark class search, which is a legal instrument.
-5. **Free-tier LLM availability rotates.** The model chain resolves at run time for
-   exactly this reason, but the proposer can still return nothing, and the system is
-   built to proceed without it.
 
 ## Licence
 

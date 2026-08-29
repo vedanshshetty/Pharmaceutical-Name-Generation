@@ -49,8 +49,8 @@ st.markdown("""
 
 
 @st.cache_resource(show_spinner="Assembling reference data and building the system…")
-def get_system(live: bool, use_llm: bool, stem_aware: bool):
-    return build_system(live=live, use_llm=use_llm, use_artifacts=True,
+def get_system(live: bool, stem_aware: bool):
+    return build_system(live=live, use_artifacts=True,
                         verifier_config=VerifierConfig(stem_aware_similarity=stem_aware))
 
 
@@ -60,20 +60,15 @@ with st.sidebar:
     live = st.toggle("Live regulator data", value=True,
                      help="openFDA, RxNorm and the EMA register. Falls back to the "
                           "committed snapshot on any failure, and says so.")
-    use_llm = st.toggle("LLM proposer", value=True,
-                        help="OpenRouter free tier. Escalated to only when the free "
-                             "pool's best result is thin. Needs OPENROUTER_API_KEY.")
     stem_aware = st.toggle("Stem-aware similarity", value=True,
                            help="Strip the mandated stem before scoring, so "
                                 "distinctiveness measures the part the namer controls.")
 
-    system = get_system(live, use_llm, stem_aware)
+    system = get_system(live, stem_aware)
     snap = system.snapshot.manifest()
     st.caption(f"**{snap['mode'].upper()}** · {snap['unique_generic']} generic / "
                f"{snap['unique_brand']} brand names · {snap['stem_rows']} stems")
     st.caption(f"fingerprint `{snap['fingerprint']}`")
-    if not system.generic.llm and use_llm:
-        st.warning("No OPENROUTER_API_KEY found — running on the free CPU pool only.")
 
     st.divider()
     st.header("Search effort")
@@ -119,7 +114,7 @@ with tab_gen:
     if st.button("Generate", type="primary", use_container_width=True):
         pipeline = system.pipeline("generic" if is_generic else "brand")
         pipeline.config = PipelineConfig(pool_per_proposer=pool, max_rounds=rounds,
-                                         shortlist_size=n, use_llm=use_llm,
+                                         shortlist_size=n,
                                          treat_moderate_as_failure=strict, seed=int(seed))
         for p in pipeline.proposers:
             if hasattr(p, "config"):

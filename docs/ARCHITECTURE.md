@@ -78,13 +78,8 @@ it, and the evaluation section reports both.
 |---|---|---|
 | Grammar | microseconds | Every request |
 | N-gram | microseconds | Every request |
-| LLM | seconds + rate-limit slot | Only when the free pool's best quality is thin |
 
-Putting the LLM in the free pool would be a unit mismatch: paying seconds and a
-rate-limit slot to double-check something CPU microseconds already solved. Escalation
-triggers on `llm_quality_threshold`, capped by `llm_max_calls`.
-
-The model ID is resolved at run time — auto-router, then live price-filtered discovery,
-then a static fallback list — because OpenRouter's free roster rotates and a hardcoded
-slug becomes a silent 404 that reads to the user as "the LLM produced nothing". v1
-hardcoded one.
+Both proposers are free CPU and run on every request. There is deliberately no metered
+proposer: every mechanism in the pool is an interpreter-free, statistical or rule-based
+component that runs offline and deterministically. Nothing in a run depends on a remote
+service, a key, or a rate limit, so results are reproducible without a budget line.

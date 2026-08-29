@@ -130,7 +130,7 @@ def run_sweep(system, targets: Optional[Sequence[SweepTarget]] = None,
                 "band_low": st.get("band_low"), "band_moderate": st.get("band_moderate"),
                 "returned": st["returned"], "best_quality": st["best_quality"],
                 "mean_shortlist_quality": st["mean_shortlist_quality"],
-                "verifier_calls": st["verifier_calls"], "llm_calls": st["llm_calls"],
+                "verifier_calls": st["verifier_calls"],
                 "wall_seconds": st["wall_seconds"], "error": None,
             })
             say(f"    {st['returned']}/{n_per_class} returned, "

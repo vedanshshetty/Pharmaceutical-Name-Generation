@@ -39,7 +39,7 @@ def main() -> int:
                     help="Build the cache but do not stage anything for commit.")
     args = ap.parse_args()
 
-    system = build_system(live=args.live, use_llm=False, use_artifacts=True,
+    system = build_system(live=args.live, use_artifacts=True,
                           verifier_config=VerifierConfig(stem_aware_similarity=True),
                           progress=print)
     print()

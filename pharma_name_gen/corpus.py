@@ -333,7 +333,7 @@ def build_training_corpus(names_df, stems_df,
 
 
 def siblings_for_stem(corpus: TrainingCorpus, stem: str) -> List[str]:
-    """Every real generic name already using this stem. Both the LLM avoid-list and the
+    """Every real generic name already using this stem. The sibling list seeds proposal
     intra-class distinctiveness term read from here."""
     bare = stem.strip().lstrip("-").lower()
     return [n for n in corpus.generic_tokens if n.endswith(bare)]

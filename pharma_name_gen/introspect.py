@@ -52,9 +52,6 @@ def architecture_summary(system) -> str:
          f"order-3 char model, guided={system.config.guided}, "
          f"reward floor + {system.config.reward_guided_draws} draws/slot",
          "free / CPU"),
-        ("PROPOSE", "LLMProposer",
-         "OpenRouter free tier, escalated only when the pool is thin",
-         "metered" if system.generic.llm else "disabled"),
         ("SCREEN", "Verifier",
          f"similarity(moderate={v.thresholds.similarity_moderate}, "
          f"high={v.thresholds.similarity_high})  stem  trademark  phonotactics  "
@@ -117,17 +114,8 @@ def data_flow() -> str:
                     |
             QualityScorer.score()
                     |
-         best quality < threshold?
+             SELECT top N by quality
                     |
-              yes --+-- no
-               |        |
-        LLMProposer     |                  <- metered, escalation only
-        (semantic)      |
-               |        |
-               +---+----+
-                   |
-            SELECT top N by quality
-                   |
                shortlist
 """
 
@@ -266,27 +254,6 @@ DESIGN_DECISIONS: List[Dict[str, str]] = [
                      "toward the average of two incompatible targets.",
         "evidence": "`GENERIC_WEIGHTS` vs `BRAND_WEIGHTS`; `stem_avoidance` and "
                     "`memorability` exist only for brand.",
-    },
-    {
-        "area": "Cost",
-        "decision": "The LLM escalates, it does not join the free pool",
-        "alternative": "Run all three proposers in parallel every request",
-        "reasoning": "A unit mismatch. The CPU proposers cost microseconds; an LLM call "
-                     "costs seconds, a rate-limit slot and (off the free tier) money. "
-                     "Paying that to double-check something already solved for free is "
-                     "waste. It is invoked when the free pool's best quality is thin, "
-                     "which is the one case where semantic reasoning is worth it.",
-        "evidence": "`llm_quality_threshold`, `llm_max_calls`.",
-    },
-    {
-        "area": "Cost",
-        "decision": "Resolve the LLM model at run time, never hardcode a slug",
-        "alternative": "Pin a model ID (v1 pinned `google/gemini-pro`)",
-        "reasoning": "OpenRouter's free roster rotates and models get delisted without "
-                     "notice. A hardcoded ID becomes a silent 404 that reads to the user "
-                     "as 'the LLM produced nothing'. The chain tries the auto-router, "
-                     "then live price-filtered discovery, then a static fallback list.",
-        "evidence": "`llm.OpenRouterProposer.model_chain()`.",
     },
     {
         "area": "Reproducibility",

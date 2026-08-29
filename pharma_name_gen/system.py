@@ -10,7 +10,6 @@ v1 (verifier: 1,918 names; generator: 420; nobody noticed).
 
 from __future__ import annotations
 
-import random
 import subprocess
 import time
 from dataclasses import dataclass, field
@@ -25,7 +24,7 @@ from .artifacts import (
 from .contracts import TargetType
 from .corpus import build_screening_corpus, build_training_corpus, siblings_for_stem
 from .orchestrator import (
-    GrammarProposer, LLMProposer, NGramProposer, NominaPipeline, PipelineConfig,
+    GrammarProposer, NGramProposer, NominaPipeline, PipelineConfig,
 )
 from .phonotactics import InducedGrammar
 from .quality import QualityScorer, ShapeReference
@@ -97,8 +96,6 @@ class NominaSystem:
             f"{self.scorer.shape_generic.mean_syl:.1f} syll, brand "
             f"{self.scorer.shape_brand.mean_len:.1f} chars / "
             f"{self.scorer.shape_brand.mean_syl:.1f} syll",
-            f"  LLM proposer       : "
-            f"{'enabled' if self.generic.llm else 'disabled (no API key)'}",
         ])
 
 
@@ -106,8 +103,6 @@ def build_system(live: bool = True,
                  config: Optional[PipelineConfig] = None,
                  verifier_config: Optional[Any] = None,
                  use_artifacts: bool = True,
-                 use_llm: bool = True,
-                 api_key: Optional[str] = None,
                  ndc_limit: int = 20000,
                  progress: Optional[Callable[[str], None]] = None) -> NominaSystem:
     """Construct the whole system.
@@ -235,28 +230,6 @@ def build_system(live: bool = True,
                                   [n for n in training.generic_tokens if 5 <= len(n) <= 18])
     scorer.shape_brand = _shape("brand", training.brand_names)
 
-    # -- LLM ----------------------------------------------------------------
-    llm_generic = llm_brand = None
-    if use_llm:
-        from .llm import LLMConfig, OpenRouterProposer
-        client = OpenRouterProposer(LLMConfig(), api_key=api_key)
-        if client.available:
-            def avoid_generic(ctx):
-                sibs = siblings_for_stem(training, ctx.target_stem or "")
-                return sibs[:20] or random.Random(0).sample(
-                    screening.all, min(20, len(screening.all)))
-
-            def avoid_brand(ctx):
-                return random.Random(0).sample(
-                    training.brand_names, min(20, len(training.brand_names)))
-
-            llm_generic = LLMProposer(client, avoid_generic)
-            llm_brand = LLMProposer(client, avoid_brand)
-            log.append("LLM proposer available (OpenRouter, free tier)")
-        else:
-            log.append("LLM proposer disabled: no API key found")
-    say(log[-1])
-
     # -- pipelines ----------------------------------------------------------
     from .generator import GeneratorConfig, refine_candidate
     gcfg = GeneratorConfig()
@@ -282,7 +255,7 @@ def build_system(live: bool = True,
                           prefix_min, prefix_max,
                           cfg, scorer=scorer, guided=cfg.guided),
         ],
-        refine_fn=refine_candidate, config=cfg, llm_proposer=llm_generic,
+        refine_fn=refine_candidate, config=cfg,
         sibling_fn=lambda stem: siblings_for_stem(training, stem),
     )
 
@@ -299,7 +272,7 @@ def build_system(live: bool = True,
                           gcfg.min_brand_length, gcfg.max_brand_length,
                           cfg, scorer=scorer, guided=cfg.guided),
         ],
-        refine_fn=refine_candidate, config=cfg, llm_proposer=llm_brand,
+        refine_fn=refine_candidate, config=cfg,
         sibling_fn=lambda stem: [],
     )
 

@@ -13,5 +13,5 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 def system():
     from pharma_name_gen import build_system
     from pharma_name_gen.verifier import VerifierConfig
-    return build_system(live=False, use_llm=False, use_artifacts=False,
+    return build_system(live=False, use_artifacts=False,
                         verifier_config=VerifierConfig(stem_aware_similarity=True))

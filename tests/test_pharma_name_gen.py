@@ -267,14 +267,6 @@ class TestPipeline:
         assert "accepted" in df.columns and "quality_total" in df.columns
         assert df["accepted"].sum() >= len(r.shortlist)
 
-    def test_llm_absence_is_not_an_error(self, system):
-        """No key, no network, no LLM: the run must still complete on the free pool."""
-        assert system.generic.llm is None
-        r = system.generic.generate(n_shortlist=3, target_class="beta-blocker",
-                                    target_stem="-olol")
-        assert r.shortlist
-        assert r.stats["llm_calls"] == 0
-
 
 # ===========================================================================
 # Quality objective
